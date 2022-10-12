@@ -76,7 +76,7 @@ class UpcomingPage extends StatelessWidget {
                                 customFunction: () {
                                   log('Reschedule');
                                   // Navigator.push(context, MaterialPageRoute(builder: (_) => const ReschedulePage()));
-                                  Navigator.pushNamed(context, '/reschedule');
+                                  Navigator.pushNamed(context, MyRoutes.reschedule);
                                 },
                                 fontSize: 13,
                                 text: 'Reschedule',
