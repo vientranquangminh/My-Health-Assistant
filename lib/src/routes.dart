@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_health_assistant/src/pages/screens/fill_profile/fill_profile.dart';
 import 'package:my_health_assistant/src/pages/screens/schedule/cancel_page/cancel_page.dart';
 import 'package:my_health_assistant/src/pages/screens/schedule/reschedule_page/reschedule_page.dart';
 import 'package:my_health_assistant/src/pages/screens/schedule/reschedule_page/select_date_time_page.dart';
@@ -26,6 +27,7 @@ class MyRoutes {
   static const seeAllArticles = '/see_all_articles';
   static const signIn = '/sign_in';
   static const signUp = '/sign_up';
+  static const fillProfile = '/fillProfile';
   static const waitScreen = '/wait_screen';
 }
 
@@ -42,5 +44,6 @@ var customRoutes = <String, WidgetBuilder>{
   // MyRoutes.seeAllArticles:(context) => const SeeAllArticlesPage(),
   MyRoutes.signIn: (context) => const SignInScreen(),
   MyRoutes.signUp: (context) => const SignUpScreen(),
+  MyRoutes.fillProfile: (context) => const FillProfileScreen(),
   MyRoutes.waitScreen:(context) => const WaitingVerifyScreen(),
 };

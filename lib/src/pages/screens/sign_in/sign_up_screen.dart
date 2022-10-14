@@ -164,7 +164,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fillColor: const Color(0XFF0069FE),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushReplacementNamed(context, MyRoutes.signIn);
+                        Navigator.pushReplacementNamed(
+                            context, MyRoutes.signIn);
                       }
                     },
                     child: const Text(
@@ -173,10 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

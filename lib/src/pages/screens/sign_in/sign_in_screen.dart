@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-
 import 'package:my_health_assistant/src/routes.dart';
+
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';
 
@@ -149,7 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     fillColor: const Color(0XFF0069FE),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, MyRoutes.pageController);
+                        Navigator.pushNamed(context, MyRoutes.fillProfile);
                       }
                     },
                     child: const Text(
