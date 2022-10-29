@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/home/component/doctor_object.dart';
+import 'package:my_health_assistant/src/routes.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 
@@ -75,6 +76,14 @@ class ContainerDoctor extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
+                      Text(
+                        'Phone number: ${department[index].phoneNumber!}',
+                        style: const TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12),
+                      ),
+                      const SizedBox(height: 8),
                       Row(
                         children: [
                           if (department[index].gender == 'Male')
@@ -97,8 +106,8 @@ class ContainerDoctor extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                          width: 80,
-                          height: 30,
+                          width: 70,
+                          height: 28,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
@@ -107,10 +116,11 @@ class ContainerDoctor extends StatelessWidget {
                                     const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20))))),
-                            onPressed: () {},
+                            onPressed: () => Navigator.pushNamed(
+                                context, PatientRoutes.selectDate),
                             child: const Text(
                               'Book',
-                              style: MyFontStyles.whiteColorH1,
+                              style: MyFontStyles.whiteColorH2,
                             ),
                           ))
                     ],
