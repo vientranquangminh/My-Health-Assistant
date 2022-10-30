@@ -39,10 +39,11 @@ class ContainerDoctor extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width / 1.75,
+                        width: MediaQuery.of(context).size.width / 1.65,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -76,53 +77,83 @@ class ContainerDoctor extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        'Phone number: ${department[index].phoneNumber!}',
-                        style: const TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12),
-                      ),
-                      const SizedBox(height: 8),
                       Row(
                         children: [
-                          if (department[index].gender == 'Male')
-                            const Icon(
-                              Icons.male_outlined,
-                              color: Colors.blue,
-                              size: 20,
-                            ),
-                          if (department[index].gender == 'Female')
-                            const Icon(
-                              Icons.female_outlined,
-                              color: Colors.pink,
-                              size: 20,
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(department[index].gender!),
+                          const Icon(
+                            Icons.phone,
+                            size: 15,
+                            color: Colors.black54,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            department[index].phoneNumber!,
+                            style: const TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 4),
                       SizedBox(
-                          width: 70,
-                          height: 28,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    MyColors.mainColor),
-                                shape: MaterialStateProperty.all(
-                                    const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))))),
-                            onPressed: () => Navigator.pushNamed(
-                                context, PatientRoutes.selectDate),
-                            child: const Text(
-                              'Book',
-                              style: MyFontStyles.whiteColorH2,
+                        width: MediaQuery.of(context).size.width / 1.65,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                if (department[index].gender == 'Male')
+                                  const Icon(
+                                    Icons.male_outlined,
+                                    color: Colors.blue,
+                                    size: 20,
+                                  ),
+                                if (department[index].gender == 'Female')
+                                  const Icon(
+                                    Icons.female_outlined,
+                                    color: Colors.pink,
+                                    size: 20,
+                                  ),
+                                if (department[index].gender == 'Others')
+                                  const Icon(
+                                    Icons.question_mark,
+                                    color: Colors.blue,
+                                    size: 20,
+                                  ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  child: Text(department[index].gender!,
+                                      style: const TextStyle(
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12)),
+                                ),
+                              ],
                             ),
-                          ))
+                            SizedBox(
+                                width: 70,
+                                height: 28,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              MyColors.mainColor),
+                                      shape: MaterialStateProperty.all(
+                                          const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))))),
+                                  onPressed: () => Navigator.pushNamed(
+                                      context, PatientRoutes.selectDate),
+                                  child: const Text(
+                                    'Book',
+                                    style: MyFontStyles.whiteColorH2,
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),

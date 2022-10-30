@@ -20,7 +20,7 @@ List<DoctorObject> listDoctor = [
     department: 'General',
     imgUrl: 'assets/images/schedule_page/doctor.png',
     hospital: 'Christ Hospital',
-    gender: 'Female',
+    gender: 'Others',
     phoneNumber: '0905223344',
   ),
   DoctorObject(
