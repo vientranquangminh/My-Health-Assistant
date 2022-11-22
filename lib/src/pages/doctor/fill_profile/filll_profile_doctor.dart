@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+import 'package:my_health_assistant/src/data/firebase_firestore/doctor/fill_information/fill_information-doctor.dart';
+import 'package:my_health_assistant/src/data/shared_preferences.dart';
+import 'package:my_health_assistant/src/models/users/doctor.dart';
 import 'package:my_health_assistant/src/pages/doctor/doctor_page_controller.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/fill_profile/component/show_dialog.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';
@@ -130,21 +134,30 @@ class _FillProfileDoctorState extends State<FillProfileDoctor> {
                 width: MediaQuery.of(context).size.width,
                 height: 60,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => const DialogBuilder(),
-                      );
-                      Timer(const Duration(milliseconds: 1500), () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const DoctorPageController(),
-                            ));
-                      });
-                    }
+                  onPressed: () async {
+                    String? uid = await SharedPrefs.getUid();
+                    showDialog(
+                      context: context,
+                      builder: (context) => const DialogBuilder(),
+                    );
+                    Timer(const Duration(seconds: 2), () {
+                      Doctor doctor = Doctor(
+                          id: uid!,
+                          fullName: _nameController.text,
+                          address: _addressController.text,
+                          dateOfBirth:
+                              DateFormat('dd-MM-yyyy').parse(_dateInput.text),
+                          gender: textGender ?? '',
+                          phoneNumber: _phoneNumberController.text,
+                          department: textDepartment ?? '',
+                          avatar: '',
+                          hospital: 'Vinmec',
+                          description: '');
+                      FillInformationDoctor.addDoctorInformation(
+                          doctor.toJson());
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => const DoctorPageController()));
+                    });
                   },
                   style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   child: const Text(

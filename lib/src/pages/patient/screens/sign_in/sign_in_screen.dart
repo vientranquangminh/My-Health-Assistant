@@ -195,7 +195,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                     builder: (context) =>
                                         const FillProfileDoctor(),
                                   ));
-                              log('nhu cc ay');
                             }
                           }
                         }

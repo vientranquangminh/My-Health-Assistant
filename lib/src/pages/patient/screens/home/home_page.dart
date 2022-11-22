@@ -88,41 +88,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   children: [
                     IconButton(
                         onPressed: () {
-                          // CollectionReference users =
-                          //     FirebaseFirestore.instance.collection('doctors');
-                          // final deps = [
-                          //   'General',
-                          //   'Dentist',
-                          //   'Ophthalmologist',
-                          //   'Nutritionist',
-                          //   'Neurologist',
-                          //   'Pediatric',
-                          //   'Radiology'
-                          // ];
-                          // String dep = deps[Random().nextInt(deps.length)];
-                          // users
-                          //     .add({
-                          //       'address': 'Da Nang',
-                          //       'avatar': 'image',
-                          //       'dateOfBirth': '1-10-2022',
-                          //       'department': dep,
-                          //       'description':
-                          //           'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero\'s De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with',
-                          //       'fullName': 'Nguyen Van A',
-                          //       'gender': 'Male',
-                          //       'hospital': 'Vinmec',
-                          //       'phoneNumber': '0987656789'
-                          //     })
-                          //     .then((value) => print("User Added"))
-                          //     .catchError((error) =>
-                          //         print("Failed to add user: $error"));
                           final key = UniqueKey();
                           Logger().i(key.toString());
                         },
                         icon: SvgPicture.asset(
                             'assets/images/home_page/bell-alert.svg')),
                     IconButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          var collection = FirebaseFirestore.instance
+                              .collection('doctors');
+                          var snapshots = await collection.get();
+                          for (var doc in snapshots.docs) {
+                            await doc.reference.delete();
+                          }
+                        },
                         icon: SvgPicture.asset(
                             'assets/images/home_page/heart.svg'))
                   ],

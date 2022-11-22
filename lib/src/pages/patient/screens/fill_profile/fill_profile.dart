@@ -31,7 +31,6 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
   String? textGender;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _phoneNumberController.dispose();
     _nameController.dispose();
@@ -145,7 +144,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                         context: context,
                         builder: (context) => const DialogBuilder(),
                       );
-                      Timer(const Duration(seconds: 3), () {
+                      Timer(const Duration(seconds: 2), () {
                         Patient patient = Patient(id: uid!, fullName: _nameController.text, nickname: _nicknameController.text, dateOfBirth: DateFormat('dd-MM-yyyy').parse(_dateInput.text), gender: textGender ?? '', phoneNumber: _phoneNumberController.text, address: _addressController.text);
                         FillInformation.addPatientInformation(patient.toJson());
                         Navigator.pushNamed(context, PatientRoutes.pageController);
