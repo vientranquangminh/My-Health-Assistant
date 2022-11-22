@@ -110,6 +110,7 @@ class ProfileDoctor extends StatelessWidget {
                                       log('Logout');
                                       SignOut.signOut();
                                       SharedPrefs.isLoggedOut();
+                                      SharedPrefs.removeUid();
                                       Navigator.popUntil(
                                           context,
                                           ModalRoute.withName(

@@ -51,6 +51,10 @@ var customRoutes = <String, WidgetBuilder> {
   PatientRoutes.signUp: (context) => const SignUpScreen(),
   PatientRoutes.fillProfile: (context) => const FillProfileScreen(),
   PatientRoutes.waitScreen: (context) => const WaitingVerifyScreen(),
+
+
+  DoctorRoutes.fillDoctorProfile: (context) => const FillProfileDoctor(),
+  DoctorRoutes.doctorPageController: (context) => const ProfileDoctor(),
 };
 
 class DoctorRoutes {
@@ -58,7 +62,3 @@ class DoctorRoutes {
   static const fillDoctorProfile = '/dfillProfile';
 }
 
-var customDoctorRoutes = <String, WidgetBuilder> {
-  DoctorRoutes.fillDoctorProfile: (context) => const FillProfileDoctor(),
-  DoctorRoutes.doctorPageController: (context) => const ProfileDoctor(),
-};
