@@ -1,10 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:logger/logger.dart';
+import 'package:my_health_assistant/src/data/firebase_firestore/doctor/authentication/sign_in.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/patient/fill_information_firestore/fill_information_firestore.dart';
+import 'package:my_health_assistant/src/pages/doctor/doctor_page_controller.dart';
 import 'package:my_health_assistant/src/pages/doctor/fill_profile/filll_profile_doctor.dart';
 import 'package:my_health_assistant/src/routes.dart';
 
@@ -161,14 +165,42 @@ class _SignInScreenState extends State<SignInScreen> {
                     fillColor: const Color(0XFF0069FE),
                     onPressed: () async {
                       if (isDoctor == true) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const FillProfileDoctor(),
-                            ));
+                        if (_formKey.currentState!.validate()) {
+                          User? user = await SignIn.loginUsingEmailPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                              context: context);
+                          if (user != null) {
+                            await SignInDoctor.getDoctor();
+                            SharedPrefs.isLoggedIn(true);
+                            SharedPrefs.writeUid(user.uid);
+                            logger.i('uid from user: ${user.uid}');
+                            String? uidFromPrefs = await SharedPrefs.getUid();
+                            logger.i('uid prefs user: $uidFromPrefs');
+
+                            final bool filled =
+                                await SignInDoctor.checkDoctorExist(user.uid);
+
+                            if (filled) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DoctorPageController(),
+                                  ));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const FillProfileDoctor(),
+                                  ));
+                              log('nhu cc ay');
+                            }
+                          }
+                        }
                       } else {
                         if (_formKey.currentState!.validate()) {
-                          // Navigator.pushNamed(context, MyRoutes.fillProfile);
                           User? user = await SignIn.loginUsingEmailPassword(
                               email: _emailController.text,
                               password: _passwordController.text,

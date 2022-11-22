@@ -28,7 +28,6 @@ class _FillProfileDoctorState extends State<FillProfileDoctor> {
   String? textDepartment;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _phoneNumberController.dispose();
     _nameController.dispose();
@@ -137,7 +136,7 @@ class _FillProfileDoctorState extends State<FillProfileDoctor> {
                         context: context,
                         builder: (context) => const DialogBuilder(),
                       );
-                      Timer(const Duration(seconds: 3), () {
+                      Timer(const Duration(milliseconds: 1500), () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
