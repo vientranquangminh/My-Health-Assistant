@@ -121,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                                       Navigator.popUntil(
                                           context,
                                           ModalRoute.withName(
-                                              PatientRoutes.startApp));
+                                              PatientRoutes.signUp));
                                     }),
                                   );
                                 },

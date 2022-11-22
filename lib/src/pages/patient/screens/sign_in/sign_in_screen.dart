@@ -189,12 +189,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                         const DoctorPageController(),
                                   ));
                             } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const FillProfileDoctor(),
-                                  ));
+                              Navigator.pushNamed(
+                                  context, DoctorRoutes.fillDoctorProfile);
                             }
                           }
                         }

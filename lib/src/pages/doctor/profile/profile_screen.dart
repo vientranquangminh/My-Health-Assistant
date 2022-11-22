@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:my_health_assistant/src/data/shared_preferences.dart';
 import 'package:my_health_assistant/src/pages/doctor/profile/edit_profile_doctor.dart';
+import 'package:my_health_assistant/src/routes.dart';
+import 'package:my_health_assistant/src/services/sign_out.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/widgets/bottom_sheet/bottom_sheet_logout.dart';
 
@@ -105,12 +108,12 @@ class ProfileDoctor extends StatelessWidget {
                                     }),
                                     function2: (() {
                                       log('Logout');
-                                      // SignOut.signOut();
-                                      // SharedPrefs.isLoggedOut();
-                                      // Navigator.popUntil(
-                                      //     context,
-                                      //     ModalRoute.withName(
-                                      //         PatientRoutes.startApp));
+                                      SignOut.signOut();
+                                      SharedPrefs.isLoggedOut();
+                                      Navigator.popUntil(
+                                          context,
+                                          ModalRoute.withName(
+                                              PatientRoutes.startApp));
                                     }),
                                   );
                                 },

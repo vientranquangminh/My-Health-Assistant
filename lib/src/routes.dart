@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_health_assistant/src/data/firebase_firestore/doctor/fill_information/fill_information-doctor.dart';
+import 'package:my_health_assistant/src/pages/doctor/fill_profile/filll_profile_doctor.dart';
+import 'package:my_health_assistant/src/pages/doctor/profile/profile_screen.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/fill_profile/fill_profile.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/schedule/cancel_page/cancel_page.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/schedule/reschedule_page/select_date_time_page.dart';
@@ -48,4 +51,14 @@ var customRoutes = <String, WidgetBuilder> {
   PatientRoutes.signUp: (context) => const SignUpScreen(),
   PatientRoutes.fillProfile: (context) => const FillProfileScreen(),
   PatientRoutes.waitScreen: (context) => const WaitingVerifyScreen(),
+};
+
+class DoctorRoutes {
+  static const doctorPageController = '/dpage_controller';
+  static const fillDoctorProfile = '/dfillProfile';
+}
+
+var customDoctorRoutes = <String, WidgetBuilder> {
+  DoctorRoutes.fillDoctorProfile: (context) => const FillProfileDoctor(),
+  DoctorRoutes.doctorPageController: (context) => const ProfileDoctor(),
 };
