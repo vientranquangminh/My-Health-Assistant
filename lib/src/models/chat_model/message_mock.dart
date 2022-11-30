@@ -1,13 +1,13 @@
 import './user_model.dart';
 
-class Message {
+class MessageMock {
   final User sender;
   final String? avatar;
   final String time;
   final String? day;
   final String text;
 
-  Message({
+  MessageMock({
     required this.sender,
     this.avatar,
     required this.time,
@@ -16,54 +16,54 @@ class Message {
   });
 }
 
-List<Message> recentChats = [
-  Message(
+List<MessageMock> recentChats = [
+  MessageMock(
       sender: drake,
       avatar: 'assets/images/message_screen/Addison.jpg',
       time: '10:00 AM',
       text: "My pleasure. All the best for...",
       day: 'Today'),
-  Message(
+  MessageMock(
     sender: aidan,
     avatar: 'assets/images/message_screen/Angel.jpg',
     time: '18:00 AM',
     text: "Your solution is great 🔥🔥🔥",
     day: 'Yesterday',
   ),
-  Message(
+  MessageMock(
     sender: salvatore,
     avatar: 'assets/images/message_screen/Jason.jpg',
     time: '10:30 AM',
     text: "Thanks for the help doctor 🙏🏽",
     day: '20/12/2022',
   ),
-  Message(
+  MessageMock(
     sender: delaney,
     avatar: 'assets/images/message_screen/Judd.jpg',
     time: '17:00 AM',
     text: "I have recovered, thank you...",
     day: '14/12/2022',
   ),
-  Message(
+  MessageMock(
     sender: beckett,
     avatar: 'assets/images/message_screen/Leslie.jpg',
     time: '09:30 AM',
     text: "I went there yesterday 😄",
     day: '26/11/2022',
   ),
-  Message(
+  MessageMock(
       sender: berrnard,
       avatar: 'assets/images/message_screen/Nathan.jpg',
       time: '10:30 AM',
       text: "IDK what else is there to do",
       day: '09/11/2022'),
-  Message(
+  MessageMock(
       sender: jada,
       avatar: 'assets/images/message_screen/Stanley.jpg',
       time: '15:30 AM',
       text: "I advice you to take a break 🛏",
       day: '18/10/2022'),
-  Message(
+  MessageMock(
       sender: randy,
       avatar: 'assets/images/message_screen/Virgil.jpg',
       time: '10:30 AM',
@@ -99,35 +99,35 @@ List<Message> recentChats = [
 //   ),
 // ];
 
-final List<Message> messages = [
-  Message(
+final List<MessageMock> messages = [
+  MessageMock(
     sender: drake,
     time: '16:02',
     text: "Recently i often feel unwell. I also sometimes experience pain in the legs, and I don't know why. Do you know anything doc?",
   ),
-  Message(
+  MessageMock(
     sender: currentUser,
     time: '16:02',
     text: "Recently i often feel unwell. I also sometimes experience pain in the legs, and I don't know why. Do you know anything doc? 😭",
   ),
-  Message(
+  MessageMock(
     sender: drake,
     time: '16:01',
     text:
         "Can you tell me the problem you are having? So that i can indentify it",
   ),
-  Message(
+  MessageMock(
     sender: drake,
     time: '16:01',
     avatar: drake.avatar,
     text: "Hello, good afternoon too Andrew 😁",
   ),
-  Message(
+  MessageMock(
     sender: currentUser,
     time: '16:00',
     text: "I'm Andrew, I have a problem with my immune system 😢",
   ),
-  Message(
+  MessageMock(
     sender: currentUser,
     time: '16:00',
     avatar: drake.avatar,

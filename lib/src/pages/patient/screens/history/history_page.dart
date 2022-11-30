@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:my_health_assistant/src/models/chat_model/message_model.dart';
+import 'package:my_health_assistant/src/models/chat_model/message_mock.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/history/widgets/chat_room.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';

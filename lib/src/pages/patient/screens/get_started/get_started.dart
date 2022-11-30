@@ -25,9 +25,7 @@ class GetStarted extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
             onPressed: () async {
-              // SharedPreferences.setMockInitialValues({});
               final bool? status = await SharedPrefs.getStatus();
-              // final bool? filled = await SharedPrefs.getFilled();
               logger.i(status.toString());
               if (status == null) {
                 Navigator.pushNamed(context, CommonRoutes.signUp);
