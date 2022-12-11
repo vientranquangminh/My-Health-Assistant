@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:my_health_assistant/src/pages/admin/login_screen.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/widgets/buttons/my_elevated_button.dart';
 
@@ -58,7 +59,11 @@ class BannerDoctor extends StatelessWidget {
                     textColor: MyColors.mainColor,
                     text: 'Check now',
                     fontSize: 13,
-                    customFunction: () => log('check'),
+                    customFunction: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        )),
                   ),
                 )
               ],
