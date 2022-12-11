@@ -1,8 +1,12 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/pages/admin/admin_screen.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/appbar_admin.dart';
+import 'package:my_health_assistant/src/pages/admin/widget/button_add_account.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/doctor/doctor_object.dart';
+import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
+import 'package:my_health_assistant/src/widgets/buttons/my_elevated_button.dart';
 
 class DoctorPage extends StatelessWidget {
   const DoctorPage({Key? key}) : super(key: key);
@@ -37,7 +41,8 @@ class DoctorPage extends StatelessWidget {
                         )
                       ]),
                 ),
-                const SizedBox(height: 20),
+                const ButtonAddAccountDoctor(),
+                const SizedBox(height: 10),
                 Container(
                   height: MediaQuery.of(context).size.height / 1.5,
                   decoration: BoxDecoration(
