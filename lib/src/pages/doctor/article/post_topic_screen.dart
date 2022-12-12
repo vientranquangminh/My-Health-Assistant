@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/doctor/article/article_functions.dart';
@@ -10,9 +11,6 @@ import 'package:my_health_assistant/src/pages/doctor/article/component/container
 import 'package:my_health_assistant/src/pages/doctor/article/component/custom_topic_container.dart';
 import 'package:my_health_assistant/src/pages/global_var.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
-
-import 'package:http/http.dart' as http;
-
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';
@@ -142,7 +140,6 @@ class _PostTopicScreenState extends State<PostTopicScreen> {
                           borderRadius: BorderRadius.circular(100.0)),
                       fillColor: const Color(0XFF0069FE),
                       onPressed: () async {
-                        bool checkValidImg = false;
                         final key = UniqueKey().toString();
                         log(image.toString());
                         log(type);
@@ -166,7 +163,6 @@ class _PostTopicScreenState extends State<PostTopicScreen> {
                           final response =
                               await http.head(Uri.parse(_imageUrl.text));
                           if (response.statusCode == 200) {
-                            checkValidImg = true;
                             ArticleFunctions.addArticle(article.toJson(), key);
                             Navigator.pop(context);
                             AppToasts.showToast(

@@ -55,7 +55,7 @@ class AppToasts {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 247, 170, 164),
+            color: const Color.fromARGB(255, 247, 170, 164),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: const Color.fromARGB(255, 240, 119, 110),
@@ -64,9 +64,9 @@ class AppToasts {
           padding: const EdgeInsets.all(18),
           child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.close,
-                color: const Color.fromARGB(255, 102, 7, 0),
+                color: Color.fromARGB(255, 102, 7, 0),
               ),
               Expanded(
                 child: Text(

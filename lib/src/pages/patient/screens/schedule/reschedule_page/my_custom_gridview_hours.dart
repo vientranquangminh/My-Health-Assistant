@@ -53,7 +53,7 @@ class _MyCustomGridViewHoursState extends State<MyCustomGridViewHours> {
     for (int i = 0; i < widget.times.length; i++) {
       String selection = '${widget.date} ${widget.times[i]}';
       // log('selection: $selection');
-      print('Compare: ------ ${selection.compareTo(now)}');
+      log('Compare: ------ ${selection.compareTo(now)}');
       if (selection.compareTo(now) > 0) {
         // print('$i - ${widget.times[i]}');
         // widget.times.removeAt(i);
@@ -70,7 +70,7 @@ class _MyCustomGridViewHoursState extends State<MyCustomGridViewHours> {
     for (var element in widget.appointmentOfDoctor) {
       result.add('${element.time}');
     }
-    print('result: $result');
+    log('result: $result');
     return result;
   }
 

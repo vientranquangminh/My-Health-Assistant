@@ -3,9 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_health_assistant/src/models/chat_model/chat.dart';
-import 'package:my_health_assistant/src/models/chat_model/message_model.dart';
-import 'package:my_health_assistant/src/models/chat_model/user_model.dart';
-import 'package:my_health_assistant/src/models/users/doctor.dart';
 import 'package:my_health_assistant/src/pages/global_var.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
@@ -19,7 +16,6 @@ class Conversation extends StatelessWidget {
   final ScrollController scrollController;
   @override
   Widget build(BuildContext context) {
-    // TODO: Read message from firebase
     List<Message> messages = existedConversation!.messages!;
     log('$messages');
     return ScreenUtilInit(

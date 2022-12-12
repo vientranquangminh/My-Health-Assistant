@@ -3,14 +3,12 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/pages/global_var.dart';
-
 import 'package:my_health_assistant/src/pages/patient/screens/profile/widgets/edit_profile_widgets/gender.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/profile/widgets/edit_profile_widgets/input_date.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 import 'package:my_health_assistant/src/widgets/buttons/my_elevated_button.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';
-import 'package:my_health_assistant/src/widgets/my_dialog.dart';
 
 import 'widgets/edit_profile_widgets/textfield_custom.dart';
 

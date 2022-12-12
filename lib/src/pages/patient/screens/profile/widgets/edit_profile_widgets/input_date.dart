@@ -20,7 +20,7 @@ class _InputDateState extends State<InputDate> {
   @override
   void initState() {
     super.initState();
-    widget.dateInput.text = widget.date;
+    widget.dateInput.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.date));
   }
 
   @override
@@ -33,7 +33,6 @@ class _InputDateState extends State<InputDate> {
         readOnly: true,
         keyboardType: TextInputType.datetime,
         decoration: InputDecoration(
-          // hintText: DateFormat("dd-MM-yyyy").parse(widget.date).toIso8601String(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
           ),

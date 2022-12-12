@@ -5,15 +5,24 @@ class InputAge extends StatefulWidget {
   const InputAge({
     Key? key,
     required this.dateInput,
+    required this.date
   }) : super(key: key);
 
   final TextEditingController dateInput;
+  final String date;
 
   @override
   State<InputAge> createState() => _InputAgeState();
 }
 
 class _InputAgeState extends State<InputAge> {
+
+  @override
+  void initState() {
+    widget.dateInput.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.date));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

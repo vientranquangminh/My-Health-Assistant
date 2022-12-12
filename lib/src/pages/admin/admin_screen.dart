@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_health_assistant/src/pages/admin/dashboard.dart';
 import 'package:my_health_assistant/src/pages/admin/patient_screen.dart';
 import 'package:my_health_assistant/src/pages/admin/topic_screen.dart';
-import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 
 import 'doctor_page.dart';

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:my_health_assistant/src/models/appointment/appointment.dart';
 import 'package:my_health_assistant/src/pages/global_var.dart';
@@ -119,7 +120,7 @@ class AppointmentFunctions {
   static void completeAppointment(String appointmentId) {
     db.collection('appointments').doc(appointmentId).update({
       'status': 'Completed',
+      'endingTime': DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now()),
     });
   }
-
 }
