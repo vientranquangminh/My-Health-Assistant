@@ -50,80 +50,89 @@ class _EditProfileDoctorState extends State<EditProfileDoctor> {
             StreamBuilder<DocumentSnapshot>(
               stream: doctor,
               builder: ((context, snapshot) {
-                if(snapshot.hasError){
+                if (snapshot.hasError) {
                   return Text('Something went wrong ${snapshot.error}');
                 }
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  return const Center(child: CircularProgressIndicator(),);
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
-                if(snapshot.hasData){
+                if (snapshot.hasData) {
                   return Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomTextFiledDoctor(
-                        enabled: false,
-                        controller: _nameController..text = snapshot.data?.get('fullName'),
-                        hint: 'Full name',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      InputAge(dateInput: _dateInput, date: snapshot.data?.get('dateOfBirth')),
-                      const GenderDoctor(),
-                      CustomTextFiled(
-                        controller: _descriptionController..text = snapshot.data?.get('description'),
-                        hint: 'Description',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      CustomTextFiled(
-                        surfixIcon: const Icon(Icons.phone_android),
-                        hint: 'Phone number',
-                        keyboardType: TextInputType.number,
-                        controller: _phoneNumberController..text = snapshot.data?.get('phoneNumber'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please enter your phone number";
-                          } else if (value.length > 11 || value[0] != '0') {
-                            return "Please enter valid phone number";
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      CustomTextFiled(
-                        hint: 'Address',
-                        controller: _addressController..text = snapshot.data?.get('address'),
-                        surfixIcon: const Icon(Icons.location_on_sharp),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ],
-                  ));
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          CustomTextFiledDoctor(
+                            enabled: false,
+                            controller: _nameController
+                              ..text = snapshot.data?.get('fullName'),
+                            hint: 'Full name',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Can not be empty';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          InputAge(
+                              dateInput: _dateInput,
+                              date: snapshot.data?.get('dateOfBirth')),
+                          const GenderDoctor(),
+                          CustomTextFiled(
+                            controller: _descriptionController
+                              ..text = snapshot.data?.get('description'),
+                            hint: 'Description',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Can not be empty';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          CustomTextFiled(
+                            surfixIcon: const Icon(Icons.phone_android),
+                            hint: 'Phone number',
+                            keyboardType: TextInputType.number,
+                            controller: _phoneNumberController
+                              ..text = snapshot.data?.get('phoneNumber'),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your phone number";
+                              } else if (value.length > 11 ||
+                                  value[0] != '0') {
+                                return "Please enter valid phone number";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          CustomTextFiled(
+                            hint: 'Address',
+                            controller: _addressController
+                              ..text = snapshot.data?.get('address'),
+                            surfixIcon: const Icon(Icons.location_on_sharp),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Can not be empty';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ],
+                      ));
                 }
                 return Container();
               }),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height / 5),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 height: 60,
                 child: ElevatedButton(
                   onPressed: () {
@@ -146,7 +155,8 @@ class _EditProfileDoctorState extends State<EditProfileDoctor> {
                       log('update');
                     }
                   },
-                  style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                  style:
+                      ElevatedButton.styleFrom(shape: const StadiumBorder()),
                   child: const Text(
                     'Update',
                     style: TextStyle(fontSize: 15),

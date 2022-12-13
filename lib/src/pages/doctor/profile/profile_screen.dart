@@ -89,7 +89,7 @@ class ProfileDoctor extends StatelessWidget {
                     return const Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading...",
+                    return const Text('Loading...',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20));
                   }
