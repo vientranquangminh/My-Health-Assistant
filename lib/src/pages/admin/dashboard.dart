@@ -1,17 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
+import 'package:my_health_assistant/src/models/article/article.dart';
+import 'package:my_health_assistant/src/models/users/doctor.dart';
+import 'package:my_health_assistant/src/models/users/patient.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/appbar_admin.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 
 class DashBoardScreen extends StatelessWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
-  static List<charts.Series<BarModel, String>> _createChart() {
+
+  static List<charts.Series<BarModel, String>> _createChart(
+      int admin, int doctor, int patient, int article) {
     final data = [
-      BarModel(title: 'Account Admin', value: 2),
-      BarModel(title: 'Account Doctor', value: 20),
-      BarModel(title: 'Account Patient', value: 50),
-      BarModel(title: 'Article', value: 40),
+      BarModel(title: 'Account Admin', value: admin),
+      BarModel(title: 'Account Doctor', value: doctor),
+      BarModel(title: 'Account Patient', value: patient),
+      BarModel(title: 'Article', value: article),
     ];
     return [
       charts.Series<BarModel, String>(
@@ -26,6 +34,10 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int doctorAccounts = 0;
+    int adminAccounts = 1;
+    int patientAccounts = 0;
+    int articles = 0;
     return Container(
       color: Colors.grey[200],
       child: SingleChildScrollView(
@@ -34,133 +46,173 @@ class DashBoardScreen extends StatelessWidget {
             const AppBarAdmin(),
             Padding(
               padding: const EdgeInsets.all(40.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'DashBoard',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      ContainerDashBoard(
-                        title: 'Admin account',
-                        number: '2',
-                        icon: 'assets/images/admin/profile.svg',
-                      ),
-                      ContainerDashBoard(
-                        title: 'Paitient account',
-                        number: '50',
-                        icon: 'assets/images/admin/patient.svg',
-                      ),
-                      ContainerDashBoard(
-                        title: 'Doctor account',
-                        number: '20',
-                        icon: 'assets/images/admin/doctor.svg',
-                      ),
-                      ContainerDashBoard(
-                        title: 'Article',
-                        number: '40',
-                        icon: 'assets/images/admin/trending-topic.svg',
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
-                    child: Text(
-                      'Statistics',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
-                    height: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: charts.BarChart(
-                        _createChart(),
-                        animate: true,
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
-                    child: Text(
-                      'Recent Acticle',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)),
-                    width: double.infinity,
-                    child: DataTable(
-                      columns: const <DataColumn>[
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              'ID',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              'Article Title',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              'Created At',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ],
-                      rows: const <DataRow>[
-                        DataRow(
-                          cells: <DataCell>[
-                            DataCell(Text('1')),
-                            DataCell(Text('How to do this one?')),
-                            DataCell(Text('25/11/2022')),
-                          ],
-                        ),
-                        DataRow(
-                          cells: <DataCell>[
-                            DataCell(Text('2')),
-                            DataCell(Text('covid-19 is dangerous')),
-                            DataCell(Text('27/11/2022')),
-                          ],
-                        ),
-                        DataRow(
-                          cells: <DataCell>[
-                            DataCell(Text('3')),
-                            DataCell(Text('Mental health and wellness tips')),
-                            DataCell(Text('27/11/2022')),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+              child: StreamBuilder<List<Article>>(
+                stream: DashBoardFunctions.getAllArticles(),
+                builder: (context, snapshotArticle) {
+                  return StreamBuilder<List<Patient>>(
+                    stream: DashBoardFunctions.getAllPatientAccounts(),
+                    builder: (context, snapshotPatient) {
+                      return StreamBuilder<List<Doctor>>(
+                        stream: DashBoardFunctions.getAllDoctorAccounts(),
+                        builder: (context, snapshotDoctor) {
+                          if (snapshotArticle.hasError ||
+                              snapshotPatient.hasError ||
+                              snapshotPatient.hasError) {
+                            return Text(
+                                'Something went wrong - article: ${snapshotArticle.error} - patients: ${snapshotPatient.error} - doctor: ${snapshotDoctor.error}');
+                          }
+                          if (snapshotArticle.connectionState ==
+                                  ConnectionState.waiting ||
+                              snapshotPatient.connectionState ==
+                                  ConnectionState.waiting ||
+                              snapshotDoctor.connectionState ==
+                                  ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshotArticle.hasData &&
+                              snapshotDoctor.hasData &&
+                              snapshotPatient.hasData) {
+                            patientAccounts = snapshotPatient.data?.length ?? 0;
+                            doctorAccounts = snapshotDoctor.data?.length ?? 0;
+                            articles = snapshotArticle.data?.length ?? 0;
+                            List<DataRow> cells = [];
+                            for (int i = 0; i < articles; i++) {
+                              cells.add(DataRow(
+                                cells: <DataCell>[
+                                  DataCell(Text('$i')),
+                                  DataCell(Text(
+                                      '${snapshotArticle.data?[i].title}')),
+                                  DataCell(
+                                      Text('${snapshotArticle.data?[i].time}')),
+                                ],
+                              ));
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'DashBoard',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const ContainerDashBoard(
+                                      title: 'Admin account',
+                                      number: '1',
+                                      icon: 'assets/images/admin/profile.svg',
+                                    ),
+                                    ContainerDashBoard(
+                                      title: 'Patient account',
+                                      number: '$patientAccounts',
+                                      icon: 'assets/images/admin/patient.svg',
+                                    ),
+                                    ContainerDashBoard(
+                                      title: 'Doctor account',
+                                      number: '$doctorAccounts',
+                                      icon: 'assets/images/admin/doctor.svg',
+                                    ),
+                                    ContainerDashBoard(
+                                      title: 'Article',
+                                      number: '$articles',
+                                      icon:
+                                          'assets/images/admin/trending-topic.svg',
+                                    ),
+                                  ],
+                                ),
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 20.0, bottom: 10.0),
+                                  child: Text(
+                                    'Statistics',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  height: 300,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: charts.BarChart(
+                                      _createChart(
+                                          adminAccounts,
+                                          doctorAccounts,
+                                          patientAccounts,
+                                          articles),
+                                      animate: true,
+                                    ),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 20.0, bottom: 10.0),
+                                  child: Text(
+                                    'Recent Article',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  width: double.infinity,
+                                  child: DataTable(
+                                    columns: const <DataColumn>[
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'ID',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Article Title',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                      DataColumn(
+                                        label: Expanded(
+                                          child: Text(
+                                            'Created At',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                    rows: cells,
+                                  ),
+                                )
+                              ],
+                            );
+                          }
+                          return Container();
+                        },
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
