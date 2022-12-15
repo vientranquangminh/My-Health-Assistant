@@ -176,7 +176,7 @@ class DashBoardScreen extends StatelessWidget {
                                       DataColumn(
                                         label: Expanded(
                                           child: Text(
-                                            'ID',
+                                            'Number',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),

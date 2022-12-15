@@ -47,7 +47,7 @@ class TopicScreen extends StatelessWidget {
                               FirebaseFirestore.instance.collection('articles').doc(snapshot.data?[i].key).delete();
                             },
                             icon: const Icon(CupertinoIcons.xmark_circle_fill),
-                            iconSize: 20,
+                            iconSize: 18,
                           )),
                         ],
                       ),
@@ -86,7 +86,7 @@ class TopicScreen extends StatelessWidget {
                             DataColumn(
                               label: Expanded(
                                 child: Text(
-                                  'ID',
+                                  'Number',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ),

@@ -1,13 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_health_assistant/src/pages/admin/widget/appbar_admin.dart';
-import 'package:my_health_assistant/src/pages/admin/widget/patient/dialog_edit_profile_patient.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 
-import 'widget/patient/patient_object.dart';
+import 'widget/appbar_admin.dart';
 
-class PatientPage extends StatelessWidget {
-  const PatientPage({Key? key}) : super(key: key);
+class AppointmentAdminScreen extends StatefulWidget {
+  const AppointmentAdminScreen({Key? key}) : super(key: key);
 
+  @override
+  State<AppointmentAdminScreen> createState() => _AppointmentAdminScreenState();
+}
+
+class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,12 +31,12 @@ class PatientPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          'Patient',
+                          'Appointment',
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.w800),
                         ),
                         Text(
-                          'Manage All Patient',
+                          'Manage All Appointment',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w800),
                         )
@@ -48,32 +52,27 @@ class PatientPage extends StatelessWidget {
                   child: DataTable(
                     columns: <DataColumn>[
                       DataColumn(
-                        label: Text('Doctor Name',
+                        label: Text('Date',
                             style: MyFontStyles.blackColorH1
                                 .copyWith(fontWeight: FontWeight.bold)),
                       ),
                       DataColumn(
-                        label: Text('Nick Name',
+                        label: Text('Time',
                             style: MyFontStyles.blackColorH1
                                 .copyWith(fontWeight: FontWeight.bold)),
                       ),
                       DataColumn(
-                        label: Text('Email',
+                        label: Text('Doctor',
                             style: MyFontStyles.blackColorH1
                                 .copyWith(fontWeight: FontWeight.bold)),
                       ),
                       DataColumn(
-                        label: Text('Day Of Birth',
+                        label: Text('Department',
                             style: MyFontStyles.blackColorH1
                                 .copyWith(fontWeight: FontWeight.bold)),
                       ),
                       DataColumn(
-                        label: Text('Phone Number',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      DataColumn(
-                        label: Text('Gender',
+                        label: Text('Patient',
                             style: MyFontStyles.blackColorH1
                                 .copyWith(fontWeight: FontWeight.bold)),
                       ),
@@ -81,27 +80,22 @@ class PatientPage extends StatelessWidget {
                         label: Text(''),
                       ),
                     ],
-                    rows:
-                        List<DataRow>.generate(listPatient.length, (int index) {
+                    rows: List<DataRow>.generate(listAppointmentAdmin.length,
+                        (int index) {
                       return DataRow(
                         cells: <DataCell>[
-                          DataCell(Text(listPatient[index].name)),
-                          DataCell(Text(listPatient[index].nickname)),
-                          DataCell(Text(listPatient[index].email)),
-                          DataCell(Text(listPatient[index].dayOfBirth)),
-                          DataCell(Text(listPatient[index].phone)),
-                          DataCell(Text(listPatient[index].gender)),
+                          DataCell(Text(listAppointmentAdmin[index].date)),
+                          DataCell(Text(listAppointmentAdmin[index].time)),
+                          DataCell(Text(listAppointmentAdmin[index].doctor)),
+                          DataCell(
+                              Text(listAppointmentAdmin[index].department)),
+                          DataCell(Text(listAppointmentAdmin[index].patient)),
                           DataCell(IconButton(
-                            icon: const Icon(Icons.edit,size: 18,),
+                            icon: const Icon(CupertinoIcons.xmark_circle_fill,size: 18,),
                             onPressed: () {
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: EditPatient(),
-                                ),
-                              );
+                              setState(() {
+                                listAppointmentAdmin.removeAt(index);
+                              });
                             },
                           )),
                         ],
@@ -117,3 +111,33 @@ class PatientPage extends StatelessWidget {
     );
   }
 }
+
+class AppointmentObject {
+  String date;
+  String time;
+  String doctor;
+  String department;
+  String patient;
+
+  AppointmentObject(
+      {required this.date,
+      required this.time,
+      required this.doctor,
+      required this.department,
+      required this.patient});
+}
+
+List<AppointmentObject> listAppointmentAdmin = [
+  AppointmentObject(
+      time: '9:30',
+      date: '20/12/2022',
+      doctor: 'Linh xe ôm',
+      department: 'Dentist',
+      patient: 'Thành'),
+  AppointmentObject(
+      time: '14:30',
+      date: '20/12/2022',
+      doctor: 'Lil Rùa',
+      department: 'Dentist',
+      patient: 'Long'),
+];
