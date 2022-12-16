@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
+import 'package:my_health_assistant/src/models/users/patient.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/appbar_admin.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/patient/dialog_edit_profile_patient.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
-
-import 'widget/patient/patient_object.dart';
 
 class PatientPage extends StatelessWidget {
   const PatientPage({Key? key}) : super(key: key);
@@ -39,75 +39,92 @@ class PatientPage extends StatelessWidget {
                       ]),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: DataTable(
-                    columns: <DataColumn>[
-                      DataColumn(
-                        label: Text('Doctor Name',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      DataColumn(
-                        label: Text('Nick Name',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      DataColumn(
-                        label: Text('Email',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      DataColumn(
-                        label: Text('Day Of Birth',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      DataColumn(
-                        label: Text('Phone Number',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      DataColumn(
-                        label: Text('Gender',
-                            style: MyFontStyles.blackColorH1
-                                .copyWith(fontWeight: FontWeight.bold)),
-                      ),
-                      const DataColumn(
-                        label: Text(''),
-                      ),
-                    ],
-                    rows:
-                        List<DataRow>.generate(listPatient.length, (int index) {
-                      return DataRow(
-                        cells: <DataCell>[
-                          DataCell(Text(listPatient[index].name)),
-                          DataCell(Text(listPatient[index].nickname)),
-                          DataCell(Text(listPatient[index].email)),
-                          DataCell(Text(listPatient[index].dayOfBirth)),
-                          DataCell(Text(listPatient[index].phone)),
-                          DataCell(Text(listPatient[index].gender)),
-                          DataCell(IconButton(
-                            icon: const Icon(Icons.edit,size: 18,),
-                            onPressed: () {
-                              showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: EditPatient(),
-                                ),
-                              );
-                            },
-                          )),
-                        ],
+                StreamBuilder<List<Patient>>(
+                  stream: DashBoardFunctions.getAllPatientAccounts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong: ${snapshot.error}');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }),
-                  ),
+                    }
+                    if (snapshot.hasData) {
+                      List<Patient> patients = snapshot.data!;
+                      List<DataRow> rows = [];
+                      for (int i = 0; i < patients.length; i++) {
+                        rows.add(
+                          DataRow(
+                            cells: <DataCell>[
+                              DataCell(Text(patients[i].fullName)),
+                              DataCell(Text(patients[i].nickname)),
+                              DataCell(
+                                  Text(patients[i].dateOfBirth.toString())),
+                              DataCell(Text(patients[i].phoneNumber)),
+                              DataCell(Text(patients[i].gender)),
+                              DataCell(IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  size: 18,
+                                ),
+                                onPressed: () {
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: EditPatient(
+                                        patientId: patients[i].id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )),
+                            ],
+                          ),
+                        );
+                      }
+                      return Container(
+                        height: MediaQuery.of(context).size.height / 1.5,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: DataTable(columns: <DataColumn>[
+                          DataColumn(
+                            label: Text('Doctor Name',
+                                style: MyFontStyles.blackColorH1
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                          DataColumn(
+                            label: Text('Nick Name',
+                                style: MyFontStyles.blackColorH1
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                          DataColumn(
+                            label: Text('Day Of Birth',
+                                style: MyFontStyles.blackColorH1
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                          DataColumn(
+                            label: Text('Phone Number',
+                                style: MyFontStyles.blackColorH1
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                          DataColumn(
+                            label: Text('Gender',
+                                style: MyFontStyles.blackColorH1
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                          const DataColumn(
+                            label: Text(''),
+                          ),
+                        ], rows: rows),
+                      );
+                    }
+                    return Container();
+                  },
                 )
               ],
             ),

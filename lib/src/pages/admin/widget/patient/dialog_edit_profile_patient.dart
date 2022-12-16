@@ -1,18 +1,18 @@
 import 'dart:developer';
 
-import 'package:email_validator/email_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_health_assistant/src/models/users/doctor.dart';
+import 'package:my_health_assistant/src/models/users/patient.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_day_of_birth_admin.dart';
-import 'package:my_health_assistant/src/pages/admin/widget/edit_department.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_gender.dart';
-import 'package:my_health_assistant/src/pages/patient/screens/profile/widgets/edit_profile_widgets/gender.dart';
+import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 
 import '../../../../widgets/buttons/my_elevated_button.dart';
 
 class EditPatient extends StatefulWidget {
-  const EditPatient({
-    Key? key,
-  }) : super(key: key);
+  const EditPatient({Key? key, required this.patientId}) : super(key: key);
+  final String patientId;
 
   @override
   State<EditPatient> createState() => _EditPatientState();
@@ -46,7 +46,6 @@ class _EditPatientState extends State<EditPatient> {
             children: const [
               Text(
                 'Edit Profile Patient',
-                // 'Cancel Appointment Success',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.blue,
@@ -56,80 +55,102 @@ class _EditPatientState extends State<EditPatient> {
             ],
           ),
         ),
-        content: SizedBox(
-          height: 400,
-          child: Column(
-            children: [
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: _nameController,
-                decoration: InputDecoration(
-                    hintText: "Name",
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8))),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter patient name';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: _nameController,
-                decoration: InputDecoration(
-                    hintText: "Nick Name",
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8))),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter nick name of patient';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _phoneNumberController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Please enter phone number of patient";
-                  } else if (value.length > 10 ||
-                      value[0] != '0' ||
-                      value.length < 10) {
-                    return "Please enter valid phone number";
-                  } else if (value[0] == '0' && value[1] == '0') {
-                    return "Please enter valid phone number";
-                  } else {
-                    return null;
-                  }
-                },
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    hintText: "Phone Number",
-                    prefixIcon: const Icon(
-                      Icons.phone_android,
+        content: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('patients')
+              .doc(widget.patientId)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('Loading...');
+            }
+            if (snapshot.hasData) {
+              textGender = snapshot.data!.get('gender');
+              return SizedBox(
+                height: 400,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: _nameController
+                        ..text = snapshot.data!.get('fullName'),
+                      decoration: InputDecoration(
+                          hintText: "Name",
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter patient name';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    )),
-              ),
-              const SizedBox(height: 10),
-              EditDateOfBirthAdmin(dateInput: _dateInputController),
-              const SizedBox(height: 10),
-              EditGender(
-                getText: (value) => _getTextGender(value),
-                gender: 'Male',
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: _nickNameController
+                        ..text = snapshot.data!.get('nickname'),
+                      decoration: InputDecoration(
+                          hintText: "Nick Name",
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter nick name of patient';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _phoneNumberController
+                        ..text = snapshot.data!.get('phoneNumber'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter phone number of patient";
+                        } else if (value.length > 10 ||
+                            value[0] != '0' ||
+                            value.length < 10) {
+                          return "Please enter valid phone number";
+                        } else if (value[0] == '0' && value[1] == '0') {
+                          return "Please enter valid phone number";
+                        } else {
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          hintText: "Phone Number",
+                          prefixIcon: const Icon(
+                            Icons.phone_android,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                    const SizedBox(height: 10),
+                    EditDateOfBirthAdmin(dateInput: _dateInputController, date: snapshot.data!.get('dateOfBirth'),),
+                    const SizedBox(height: 10),
+                    EditGender(
+                      getText: (value) => _getTextGender(value),
+                      gender: snapshot.data!.get('gender'),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              );
+            }
+            return Container();
+          },
+          // child:
         ),
         actions: <Widget>[
           Container(
@@ -141,6 +162,19 @@ class _EditPatientState extends State<EditPatient> {
                 customFunction: () {
                   if (_formKey.currentState!.validate()) {
                     log(textGender.toString());
+                    log('Updated');
+                    Map<String, dynamic> data = {
+                      'fullName': _nameController.text,
+                      'nickname': _nickNameController.text,
+                      'gender': textGender,
+                      'phoneNumber': _phoneNumberController.text,
+                      'dateOfBirth': _dateInputController.text
+                    };
+                    var collection =
+                        FirebaseFirestore.instance.collection('patients');
+                    collection.doc(widget.patientId).update(data);
+                    AppToasts.showToast(
+                        context: context, title: 'Update successfully');
                     Navigator.pop(context);
                   }
                 },

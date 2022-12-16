@@ -1,18 +1,17 @@
 import 'dart:developer';
 
-import 'package:email_validator/email_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_day_of_birth_admin.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_department.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_gender.dart';
-import 'package:my_health_assistant/src/pages/patient/screens/profile/widgets/edit_profile_widgets/gender.dart';
+import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 
 import '../../../../widgets/buttons/my_elevated_button.dart';
 
 class EditDoctor extends StatefulWidget {
-  const EditDoctor({
-    Key? key,
-  }) : super(key: key);
+  const EditDoctor({Key? key, required this.docId}) : super(key: key);
+  final String docId;
 
   @override
   State<EditDoctor> createState() => _EditDoctorState();
@@ -47,7 +46,6 @@ class _EditDoctorState extends State<EditDoctor> {
             children: const [
               Text(
                 'Edit Profile Doctor',
-                // 'Cancel Appointment Success',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.blue,
@@ -57,66 +55,93 @@ class _EditDoctorState extends State<EditDoctor> {
             ],
           ),
         ),
-        content: SizedBox(
-          height: 400,
-          child: Column(
-            children: [
-              TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: _nameController,
-                decoration: InputDecoration(
-                    hintText: "Name",
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8))),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter doctor name';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _phoneNumberController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Please enter phone number of doctor";
-                  } else if (value.length > 10 ||
-                      value[0] != '0' ||
-                      value.length < 10) {
-                    return "Please enter valid phone number";
-                  } else if (value[0] == '0' && value[1] == '0') {
-                    return "Please enter valid phone number";
-                  } else {
-                    return null;
-                  }
-                },
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    hintText: "Phone Number",
-                    prefixIcon: const Icon(
-                      Icons.phone_android,
+        content: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('doctors')
+              .doc(widget.docId)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong: ${snapshot.error}');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasData) {
+              textGender = snapshot.data!.get('gender');
+              textDepartment = snapshot.data!.get('department');
+              return SizedBox(
+                height: 400,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: _nameController
+                        ..text = snapshot.data!.get('fullName'),
+                      decoration: InputDecoration(
+                          hintText: "Name",
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter doctor name';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    )),
-              ),
-              const SizedBox(height: 10),
-              EditDateOfBirthAdmin(dateInput: _dateInputController),
-              const SizedBox(height: 10),
-              EditGender(
-                getText: (value) => _getTextGender(value),
-                gender: 'Male',
-              ),
-              const SizedBox(height: 10),
-              EditDepartment(
-                  getText: (value) => _getTextDepartment(value),
-                  deparment: 'General')
-            ],
-          ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _phoneNumberController
+                        ..text = snapshot.data!.get('phoneNumber'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter phone number of doctor";
+                        } else if (value.length > 10 ||
+                            value[0] != '0' ||
+                            value.length < 10) {
+                          return "Please enter valid phone number";
+                        } else if (value[0] == '0' && value[1] == '0') {
+                          return "Please enter valid phone number";
+                        } else {
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          hintText: "Phone Number",
+                          prefixIcon: const Icon(
+                            Icons.phone_android,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          )),
+                    ),
+                    const SizedBox(height: 10),
+                    EditDateOfBirthAdmin(
+                      dateInput: _dateInputController,
+                      date: snapshot.data!.get('dateOfBirth'),
+                    ),
+                    const SizedBox(height: 10),
+                    EditGender(
+                      getText: (value) => _getTextGender(value),
+                      gender: snapshot.data!.get('gender'),
+                    ),
+                    const SizedBox(height: 10),
+                    EditDepartment(
+                        getText: (value) => _getTextDepartment(value),
+                        deparment: snapshot.data!.get('department'))
+                  ],
+                ),
+              );
+            }
+            return Container();
+          },
+          // child:
         ),
         actions: <Widget>[
           Container(
@@ -129,6 +154,18 @@ class _EditDoctorState extends State<EditDoctor> {
                   if (_formKey.currentState!.validate()) {
                     log(textGender.toString());
                     log(textDepartment.toString());
+                     Map<String, dynamic> data = {
+                      'fullName': _nameController.text,
+                      'gender': textGender,
+                      'phoneNumber': _phoneNumberController.text,
+                      'dateOfBirth': _dateInputController.text,
+                      'department': textDepartment,
+                    };
+                    var collection =
+                        FirebaseFirestore.instance.collection('doctors');
+                    collection.doc(widget.docId).update(data);
+                    AppToasts.showToast(
+                        context: context, title: 'Update successfully');
                     Navigator.pop(context);
                   }
                 },
