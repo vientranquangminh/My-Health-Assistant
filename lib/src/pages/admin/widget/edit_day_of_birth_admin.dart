@@ -2,15 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EditDateOfBirthAdmin extends StatefulWidget {
-  const EditDateOfBirthAdmin({Key? key, required this.dateInput})
+  const EditDateOfBirthAdmin({Key? key, required this.dateInput, required this.date})
       : super(key: key);
 
   @override
   State<EditDateOfBirthAdmin> createState() => _EditDateOfBirthAdminState();
   final TextEditingController dateInput;
+  final String date;
 }
 
 class _EditDateOfBirthAdminState extends State<EditDateOfBirthAdmin> {
+  
+  @override
+  void initState() {
+    widget.dateInput.text = widget.date;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -20,7 +28,6 @@ class _EditDateOfBirthAdminState extends State<EditDateOfBirthAdmin> {
       keyboardType: TextInputType.datetime,
       decoration: InputDecoration(
         hintText: 'Date Of Birth',
-        // hintText: DateFormat("dd-MM-yyyy").parse(widget.date).toIso8601String(),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
