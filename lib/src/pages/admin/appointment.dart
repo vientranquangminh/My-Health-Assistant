@@ -76,6 +76,10 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                             style: MyFontStyles.blackColorH1
                                 .copyWith(fontWeight: FontWeight.bold)),
                       ),
+                      DataColumn(
+                          label: Text('Status',
+                              style: MyFontStyles.blackColorH1
+                                  .copyWith(fontWeight: FontWeight.bold))),
                       const DataColumn(
                         label: Text(''),
                       ),
@@ -90,8 +94,12 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                           DataCell(
                               Text(listAppointmentAdmin[index].department)),
                           DataCell(Text(listAppointmentAdmin[index].patient)),
+                          DataCell(Text(listAppointmentAdmin[index].status)),
                           DataCell(IconButton(
-                            icon: const Icon(CupertinoIcons.xmark_circle_fill,size: 18,),
+                            icon: const Icon(
+                              CupertinoIcons.xmark_circle_fill,
+                              size: 18,
+                            ),
                             onPressed: () {
                               setState(() {
                                 listAppointmentAdmin.removeAt(index);
@@ -118,13 +126,15 @@ class AppointmentObject {
   String doctor;
   String department;
   String patient;
+  String status;
 
   AppointmentObject(
       {required this.date,
       required this.time,
       required this.doctor,
       required this.department,
-      required this.patient});
+      required this.patient,
+      required this.status});
 }
 
 List<AppointmentObject> listAppointmentAdmin = [
@@ -133,11 +143,13 @@ List<AppointmentObject> listAppointmentAdmin = [
       date: '20/12/2022',
       doctor: 'Linh xe ôm',
       department: 'Dentist',
-      patient: 'Thành'),
+      patient: 'Thành',
+      status: 'Upcoming'),
   AppointmentObject(
       time: '14:30',
       date: '20/12/2022',
       doctor: 'Lil Rùa',
       department: 'Dentist',
-      patient: 'Long'),
+      patient: 'Long',
+      status: 'Completed'),
 ];
