@@ -49,9 +49,9 @@ class _EditDateOfBirthAdminState extends State<EditDateOfBirthAdmin> {
             firstDate: DateTime(1950),
             lastDate: DateTime(2100));
         if (pickedDate != null) {
-          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+          // String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
           setState(() {
-            widget.dateInput.text = formattedDate;
+            widget.dateInput.text = pickedDate.toString();
           });
         }
       },
