@@ -88,6 +88,9 @@ class ChatDoctorScreen extends StatelessWidget {
                               );
                             }
                             if (snapshot.hasData) {
+                              if(snapshot.data?.exists == false){
+                                return const Text('There are no chats here');
+                              }
                               return InkWell(
                                 onTap: () {
                                   Navigator.push(context,
@@ -95,7 +98,7 @@ class ChatDoctorScreen extends StatelessWidget {
                                     return RoomChatDoctorScreen(
                                       conversationModel: doctorsChat[index],
                                       patientName:
-                                          snapshot.data!.get('fullName'),
+                                          snapshot.data?.get('fullName'),
                                     );
                                   }));
                                 },
@@ -116,8 +119,7 @@ class ChatDoctorScreen extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                // doctorsChat[index].sender.name,
-                                                snapshot.data!.get('fullName'),
+                                                snapshot.data?.get('fullName'),
                                                 style: MyFontStyles.blackColorH1
                                                     .copyWith(
                                                         fontWeight: doctorsChat[
@@ -157,21 +159,14 @@ class ChatDoctorScreen extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: [
-                                            // Text(
-                                            //   recentChats[index].day!,
-                                            //   style: MyFontStyles.normalGreyText
-                                            //       .copyWith(fontSize: 14.sp),
-                                            // ),
                                             SizedBox(height: 6.h),
                                             Text(
-                                              // recentChats[index].time,
                                               timeago.format(
                                                 DateTime.parse(
                                                     doctorsChat[index]
                                                             .lastTime ??
                                                         ''),
                                               ),
-                                              // doctorsChat[index].lastTime ?? '',
                                               style: MyFontStyles.normalGreyText
                                                   .copyWith(
                                                       fontSize: 14.sp,
@@ -191,14 +186,12 @@ class ChatDoctorScreen extends StatelessWidget {
                             }
                             return Container();
                           }),
-                          // child:
                         );
                       },
                     );
                   }
                   return Container();
                 }),
-                // child:
               ),
             ));
       },
