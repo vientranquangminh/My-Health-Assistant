@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
 import 'package:my_health_assistant/src/models/users/doctor.dart';
@@ -80,6 +81,13 @@ class DoctorPage extends StatelessWidget {
                                   );
                                 },
                               )),
+                              DataCell(IconButton(
+                                icon: const Icon(
+                                  CupertinoIcons.xmark_circle_fill,
+                                  size: 18,
+                                ),
+                                onPressed: () {},
+                              )),
                             ],
                           ),
                         );
@@ -90,36 +98,42 @@ class DoctorPage extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8)),
-                        child: DataTable(columns: <DataColumn>[
-                          DataColumn(
-                            label: Text('Doctor Name',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Department',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Day Of Birth',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Phone Number',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Gender',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          const DataColumn(
-                            label: Text(''),
-                          ),
-                        ], rows: rows),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTable(columns: <DataColumn>[
+                            DataColumn(
+                              label: Text('Doctor Name',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Department',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Day Of Birth',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Phone Number',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Gender',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            const DataColumn(
+                              label: Text(''),
+                            ),
+                            const DataColumn(
+                              label: Text(''),
+                            ),
+                          ], rows: rows),
+                        ),
                       );
                     }
                     return Container();
