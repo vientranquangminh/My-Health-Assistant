@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:my_health_assistant/src/models/users/doctor.dart';
-import 'package:my_health_assistant/src/models/users/patient.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_day_of_birth_admin.dart';
 import 'package:my_health_assistant/src/pages/admin/widget/edit_gender.dart';
 import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
@@ -150,7 +148,6 @@ class _EditPatientState extends State<EditPatient> {
             }
             return Container();
           },
-          // child:
         ),
         actions: <Widget>[
           Container(
