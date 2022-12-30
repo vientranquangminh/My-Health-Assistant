@@ -10,6 +10,8 @@ import 'package:my_health_assistant/src/styles/font_styles.dart';
 
 import 'widget/appbar_admin.dart';
 
+const List<String> list = <String>['All', 'Upcoming', 'Completed', 'Cancel'];
+
 class AppointmentAdminScreen extends StatefulWidget {
   const AppointmentAdminScreen({Key? key}) : super(key: key);
 
@@ -18,134 +20,187 @@ class AppointmentAdminScreen extends StatefulWidget {
 }
 
 class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
+  String dropdownValue = list.first;
+  String? textStatus;
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[200],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AppBarAdmin(),
-          Padding(
-            padding: const EdgeInsets.all(40.0),
-            child: StreamBuilder<List<Appointment>>(
-              stream: DashBoardFunctions.getAllAppointment(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Something went wrong ${snapshot.error}');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasData) {
-                  List<Appointment> appointments = snapshot.data ?? [];
-                  appointments.sort((a, b) {
-                    DateTime aDate = DateFormat('dd-MM-yyyy HH:mm')
-                        .parse('${a.date} ${a.time}');
-                    log(aDate.toString());
-                    DateTime bDate = DateFormat('dd-MM-yyyy HH:mm')
-                        .parse('${b.date} ${b.time}');
-                    return aDate.compareTo(bDate);
-                  });
-                  List<DataRow> cells = [];
-                  int length = snapshot.data?.length ?? 0;
-                  for (int i = 0; i < length; i++) {
-                    cells.add(DataRow(cells: [
-                      DataCell(Text('${appointments[i].date}')),
-                      DataCell(Text('${appointments[i].time}')),
-                      DataCell(Text('${appointments[i].doctorName}')),
-                      const DataCell(Text('department')),
-                      DataCell(Text('${appointments[i].patientName}')),
-                      DataCell(Text('${appointments[i].status}')),
-                      DataCell(IconButton(
-                        onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection('appointments')
-                              .doc(snapshot.data?[i].id)
-                              .delete();
-                        },
-                        icon: const Icon(CupertinoIcons.xmark_circle_fill),
-                        iconSize: 18,
-                      )),
-                    ]));
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AppBarAdmin(),
+            Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: StreamBuilder<List<Appointment>>(
+                stream: DashBoardFunctions.getAllAppointment(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong ${snapshot.error}');
                   }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Appointment',
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.w800),
-                              ),
-                              Text(
-                                'Manage All Appointment',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w800),
-                              )
-                            ]),
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        height: MediaQuery.of(context).size.height / 1.5,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8)),
-                        child: DataTable(
-                          columns: <DataColumn>[
-                            DataColumn(
-                              label: Text('Date',
-                                  style: MyFontStyles.blackColorH1
-                                      .copyWith(fontWeight: FontWeight.bold)),
-                            ),
-                            DataColumn(
-                              label: Text('Time',
-                                  style: MyFontStyles.blackColorH1
-                                      .copyWith(fontWeight: FontWeight.bold)),
-                            ),
-                            DataColumn(
-                              label: Text('Doctor',
-                                  style: MyFontStyles.blackColorH1
-                                      .copyWith(fontWeight: FontWeight.bold)),
-                            ),
-                            DataColumn(
-                              label: Text('Department',
-                                  style: MyFontStyles.blackColorH1
-                                      .copyWith(fontWeight: FontWeight.bold)),
-                            ),
-                            DataColumn(
-                              label: Text('Patient',
-                                  style: MyFontStyles.blackColorH1
-                                      .copyWith(fontWeight: FontWeight.bold)),
-                            ),
-                            DataColumn(
-                                label: Text('Status',
-                                    style: MyFontStyles.blackColorH1.copyWith(
-                                        fontWeight: FontWeight.bold))),
-                            const DataColumn(
-                              label: Text(''),
-                            ),
-                          ],
-                          rows: cells,
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    List<Appointment> appointments = snapshot.data ?? [];
+                    appointments.sort((a, b) {
+                      DateTime aDate = DateFormat('dd-MM-yyyy HH:mm')
+                          .parse('${a.date} ${a.time}');
+                      log(aDate.toString());
+                      DateTime bDate = DateFormat('dd-MM-yyyy HH:mm')
+                          .parse('${b.date} ${b.time}');
+                      return aDate.compareTo(bDate);
+                    });
+                    List<DataRow> cells = [];
+                    int length = snapshot.data?.length ?? 0;
+                    for (int i = 0; i < length; i++) {
+                      cells.add(DataRow(cells: [
+                        DataCell(Text('${appointments[i].date}')),
+                        DataCell(Text('${appointments[i].time}')),
+                        DataCell(Text('${appointments[i].doctorName}')),
+                        const DataCell(Text('department')),
+                        DataCell(Text('${appointments[i].patientName}')),
+                        DataCell(Text('${appointments[i].status}',
+                            style: TextStyle(
+                                color: appointments[i].status == 'Cancel'
+                                    ? Colors.red
+                                    : appointments[i].status == 'Upcoming'
+                                        ? Colors.blue
+                                        : Colors.green))),
+                        DataCell(IconButton(
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('appointments')
+                                .doc(snapshot.data?[i].id)
+                                .delete();
+                          },
+                          icon: const Icon(CupertinoIcons.xmark_circle_fill),
+                          iconSize: 18,
+                        )),
+                      ]));
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  'Appointment',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                                Text(
+                                  'Manage All Appointment',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800),
+                                )
+                              ]),
                         ),
-                      )
-                    ],
-                  );
-                }
-                return Container();
-              },
-            ),
-          )
-        ],
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: dropdownValue,
+                                icon: const Icon(Icons.arrow_drop_down_sharp),
+                                elevation: 10,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    dropdownValue = value!;
+                                  });
+                                },
+                                items: list.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(
+                              columns: <DataColumn>[
+                                DataColumn(
+                                  label: Text('Date',
+                                      style: MyFontStyles.blackColorH1.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                DataColumn(
+                                  label: Text('Time',
+                                      style: MyFontStyles.blackColorH1.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                DataColumn(
+                                  label: Text('Doctor',
+                                      style: MyFontStyles.blackColorH1.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                DataColumn(
+                                  label: Text('Department',
+                                      style: MyFontStyles.blackColorH1.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                DataColumn(
+                                  label: Text('Patient',
+                                      style: MyFontStyles.blackColorH1.copyWith(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                DataColumn(
+                                    label: Text('Status',
+                                        style: MyFontStyles.blackColorH1
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold))),
+                                const DataColumn(
+                                  label: Text(''),
+                                ),
+                              ],
+                              rows: cells,
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  _getStatus(value) {
+    if (value != null) {
+      setState(() {
+        textStatus = value;
+      });
+    }
   }
 }
 

@@ -91,36 +91,39 @@ class PatientPage extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8)),
-                        child: DataTable(columns: <DataColumn>[
-                          DataColumn(
-                            label: Text('Doctor Name',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Nick Name',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Day Of Birth',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Phone Number',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          DataColumn(
-                            label: Text('Gender',
-                                style: MyFontStyles.blackColorH1
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                          ),
-                          const DataColumn(
-                            label: Text(''),
-                          ),
-                        ], rows: rows),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTable(columns: <DataColumn>[
+                            DataColumn(
+                              label: Text('Doctor Name',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Nick Name',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Day Of Birth',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Phone Number',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            DataColumn(
+                              label: Text('Gender',
+                                  style: MyFontStyles.blackColorH1
+                                      .copyWith(fontWeight: FontWeight.bold)),
+                            ),
+                            const DataColumn(
+                              label: Text(''),
+                            ),
+                          ], rows: rows),
+                        ),
                       );
                     }
                     return Container();

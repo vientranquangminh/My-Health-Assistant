@@ -44,7 +44,10 @@ class TopicScreen extends StatelessWidget {
                           DataCell(Text('${snapshot.data?[i].doctorName}')),
                           DataCell(IconButton(
                             onPressed: () {
-                              FirebaseFirestore.instance.collection('articles').doc(snapshot.data?[i].key).delete();
+                              FirebaseFirestore.instance
+                                  .collection('articles')
+                                  .doc(snapshot.data?[i].key)
+                                  .delete();
                             },
                             icon: const Icon(CupertinoIcons.xmark_circle_fill),
                             iconSize: 18,
@@ -81,8 +84,9 @@ class TopicScreen extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8)),
                         width: MediaQuery.of(context).size.width,
-                        child: DataTable(
-                          columns: const <DataColumn>[
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: DataTable(columns: const <DataColumn>[
                             DataColumn(
                               label: Expanded(
                                 child: Text(
@@ -122,8 +126,7 @@ class TopicScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ],
-                          rows: cells
+                          ], rows: cells),
                         ),
                       )
                     ],
