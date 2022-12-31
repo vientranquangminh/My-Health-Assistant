@@ -53,108 +53,113 @@ class _EditProfileDoctorState extends State<EditProfileDoctor> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Text('Loading...');
             }
-            if(snapshot.hasData){
+            if (snapshot.hasData) {
               return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomTextFiledDoctor(
-                        enabled: false,
-                        controller: _nameController
-                      ..text = snapshot.data!.get('fullName'),
-                        hint: 'Full name',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Can not be empty';
-                          } else {
-                            return null;
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          CustomTextFiledDoctor(
+                            enabled: false,
+                            controller: _nameController
+                              ..text = snapshot.data!.get('fullName'),
+                            hint: 'Full name',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Can not be empty';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          InputAge(
+                            dateInput: _dateInput,
+                            date: snapshot.data!.get('dateOfBirth'),
+                          ),
+                          const GenderDoctor(),
+                          CustomTextFiled(
+                            controller: _descriptionController
+                              ..text = snapshot.data!.get('description'),
+                            hint: 'Description',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Can not be empty';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          CustomTextFiled(
+                            surfixIcon: const Icon(Icons.phone_android),
+                            hint: 'Phone number',
+                            keyboardType: TextInputType.number,
+                            controller: _phoneNumberController
+                              ..text = snapshot.data!.get('phoneNumber'),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Please enter your phone number";
+                              } else if (value.length > 11 || value[0] != '0') {
+                                return "Please enter valid phone number";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          CustomTextFiled(
+                            hint: 'Address',
+                            controller: _addressController
+                              ..text = snapshot.data!.get('address'),
+                            surfixIcon: const Icon(Icons.location_on_sharp),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Can not be empty';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ],
+                      )),
+                  SizedBox(height: MediaQuery.of(context).size.height / 5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            log('update');
+                            Map<String, dynamic> data = {
+                              'description': _descriptionController.text,
+                              'phoneNumber': _phoneNumberController.text,
+                              'address': _addressController.text
+                            };
+                            var collection = FirebaseFirestore.instance
+                                .collection('doctors');
+                            collection.doc(auth.currentUser!.uid).update(data);
+                            AppToasts.showToast(
+                                context: context, title: 'Update successfully');
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder()),
+                        child: const Text(
+                          'Update',
+                          style: TextStyle(fontSize: 15),
+                        ),
                       ),
-                      InputAge(dateInput: _dateInput, date: snapshot.data!.get('dateOfBirth'),),
-                      const GenderDoctor(),
-                      CustomTextFiled(
-                        controller: _descriptionController
-                      ..text = snapshot.data!.get('description'),
-                        hint: 'Description',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      CustomTextFiled(
-                        surfixIcon: const Icon(Icons.phone_android),
-                        hint: 'Phone number',
-                        keyboardType: TextInputType.number,
-                        controller: _phoneNumberController
-                      ..text = snapshot.data!.get('phoneNumber'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please enter your phone number";
-                          } else if (value.length > 11 || value[0] != '0') {
-                            return "Please enter valid phone number";
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      CustomTextFiled(
-                        hint: 'Address',
-                        controller: _addressController
-                      ..text = snapshot.data!.get('address'),
-                        surfixIcon: const Icon(Icons.location_on_sharp),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Can not be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ],
-                  )),
-              SizedBox(height: MediaQuery.of(context).size.height / 5),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        log('update');
-                        Map<String, dynamic> data = {
-                          'description': _descriptionController.text,
-                          'phoneNumber': _phoneNumberController.text,
-                          'address': _addressController.text
-                        };
-                        var collection =
-                          FirebaseFirestore.instance.collection('doctors');
-                      collection.doc(auth.currentUser!.uid).update(data);
-                      AppToasts.showToast(
-                          context: context, title: 'Update successfully');
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                    child: const Text(
-                      'Update',
-                      style: TextStyle(fontSize: 15),
                     ),
-                  ),
-                ),
-              )
-            ],
-          );
+                  )
+                ],
+              );
             }
             return Container();
           },
-          // child: 
+          // child:
         ),
       ),
     );

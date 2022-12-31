@@ -113,15 +113,19 @@ class _FillProfileDoctorState extends State<FillProfileDoctor> {
                       hint: 'Phone number',
                       keyboardType: TextInputType.number,
                       controller: _phoneNumberController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Please enter your phone number";
-                        } else if (value.length > 11 || value[0] != '0') {
-                          return "Please enter valid phone number";
-                        } else {
-                          return null;
-                        }
-                      },
+                       validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your phone number";
+                      } else if (value.length > 10 ||
+                          value[0] != '0' ||
+                          value.length < 10) {
+                        return "Please enter valid phone number";
+                      } else if (value[0] == '0' && value[1] == '0') {
+                        return "Please enter valid phone number";
+                      } else {
+                        return null;
+                      }
+                    },
                     ),
                     CustomTextFiled(
                       hint: 'Address',

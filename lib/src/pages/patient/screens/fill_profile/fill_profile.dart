@@ -109,10 +109,13 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Please enter your phone number";
-                        } else if (value.length > 11 || value[0] != '0') {
+                        } else if (value.length > 10 ||
+                            value[0] != '0' ||
+                            value.length < 10) {
                           return "Please enter valid phone number";
-                        }
-                        else{
+                        } else if (value[0] == '0' && value[1] == '0') {
+                          return "Please enter valid phone number";
+                        } else {
                           return null;
                         }
                       },
@@ -146,9 +149,18 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                         builder: (context) => const DialogBuilder(),
                       );
                       Timer(const Duration(seconds: 3), () {
-                        Patient patient = Patient(id: uid!, fullName: _nameController.text, nickname: _nicknameController.text, dateOfBirth: DateFormat('dd-MM-yyyy').parse(_dateInput.text), gender: textGender ?? '', phoneNumber: _phoneNumberController.text, address: _addressController.text);
+                        Patient patient = Patient(
+                            id: uid!,
+                            fullName: _nameController.text,
+                            nickname: _nicknameController.text,
+                            dateOfBirth:
+                                DateFormat('dd-MM-yyyy').parse(_dateInput.text),
+                            gender: textGender ?? '',
+                            phoneNumber: _phoneNumberController.text,
+                            address: _addressController.text);
                         FillInformation.addPatientInformation(patient.toJson());
-                        Navigator.pushNamed(context, PatientRoutes.pageController);
+                        Navigator.pushNamed(
+                            context, PatientRoutes.pageController);
                       });
                     }
                   },

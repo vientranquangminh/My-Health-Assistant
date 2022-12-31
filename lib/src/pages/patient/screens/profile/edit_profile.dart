@@ -10,7 +10,6 @@ import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 import 'package:my_health_assistant/src/widgets/buttons/my_elevated_button.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';
-import 'package:my_health_assistant/src/widgets/my_dialog.dart';
 
 import 'widgets/edit_profile_widgets/textfield_custom.dart';
 
@@ -78,6 +77,19 @@ class _EditProfileState extends State<EditProfile> {
                     keyboardType: TextInputType.number,
                     controller: _phoneNumberController
                       ..text = snapshot.data!.get('phoneNumber'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your phone number";
+                      } else if (value.length > 10 ||
+                          value[0] != '0' ||
+                          value.length < 10) {
+                        return "Please enter valid phone number";
+                      } else if (value[0] == '0' && value[1] == '0') {
+                        return "Please enter valid phone number";
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   TextFieldCustom(
                     hint: 'Address',
