@@ -123,7 +123,7 @@ class DoctorPage extends StatelessWidget {
                           );
                         }
                         return Container(
-                          height: MediaQuery.of(context).size.height / 1.5,
+                          height: MediaQuery.of(context).size.height / 1.6,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,

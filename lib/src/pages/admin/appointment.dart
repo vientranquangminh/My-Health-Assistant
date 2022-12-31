@@ -21,7 +21,6 @@ class AppointmentAdminScreen extends StatefulWidget {
 
 class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
   String dropdownValue = list.first;
-  String? textStatus;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -135,7 +134,7 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: MediaQuery.of(context).size.height / 1.5,
+                          height: MediaQuery.of(context).size.height / 1.6,
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -193,14 +192,6 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
         ),
       ),
     );
-  }
-
-  _getStatus(value) {
-    if (value != null) {
-      setState(() {
-        textStatus = value;
-      });
-    }
   }
 }
 

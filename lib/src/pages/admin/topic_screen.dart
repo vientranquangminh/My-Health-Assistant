@@ -7,137 +7,200 @@ import 'package:my_health_assistant/src/models/article/article.dart';
 
 import 'package:my_health_assistant/src/pages/admin/widget/appbar_admin.dart';
 
-class TopicScreen extends StatelessWidget {
+const List<String> list = <String>[
+  'All',
+  'Medical',
+  'Health',
+  'Covid-19',
+  'Lifestyle'
+];
+
+class TopicScreen extends StatefulWidget {
   const TopicScreen({Key? key}) : super(key: key);
 
+  @override
+  State<TopicScreen> createState() => _TopicScreenState();
+}
+
+class _TopicScreenState extends State<TopicScreen> {
+  String dropdownValue = list.first;
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[200],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AppBarAdmin(),
-          Padding(
-            padding: const EdgeInsets.all(40.0),
-            child: StreamBuilder<List<Article>>(
-              stream: DashBoardFunctions.getAllArticles(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Something went wrong: ${snapshot.error}');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasData) {
-                  List<DataRow> cells = [];
-                  int length = snapshot.data?.length ?? 0;
-                  for (int i = 0; i < length; i++) {
-                    cells.add(
-                      DataRow(
-                        cells: [
-                          DataCell(Text('$i')),
-                          DataCell(Text('${snapshot.data?[i].title}')),
-                          DataCell(Text('${snapshot.data?[i].time}')),
-                          DataCell(Text('${snapshot.data?[i].doctorName}')),
-                          DataCell(IconButton(
-                            onPressed: () {
-                              FirebaseFirestore.instance
-                                  .collection('articles')
-                                  .doc(snapshot.data?[i].key)
-                                  .delete();
-                            },
-                            icon: const Icon(CupertinoIcons.xmark_circle_fill),
-                            iconSize: 18,
-                          )),
-                        ],
-                      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AppBarAdmin(),
+            Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: StreamBuilder<List<Article>>(
+                stream: DashBoardFunctions.getAllArticles(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong: ${snapshot.error}');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
                   }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Article',
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.w800),
-                              ),
-                              Text(
-                                'Manage All Article post',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w800),
-                              )
-                            ]),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8)),
-                        width: MediaQuery.of(context).size.width,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: DataTable(columns: const <DataColumn>[
-                            DataColumn(
-                              label: Expanded(
-                                child: Text(
-                                  'Number',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Expanded(
-                                child: Text(
-                                  'Article Title',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Expanded(
-                                child: Text(
-                                  'Created At',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Expanded(
-                                child: Text(
-                                  'Created by',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            DataColumn(
-                              label: Expanded(
-                                child: Text(
-                                  '',
-                                ),
-                              ),
-                            ),
-                          ], rows: cells),
+                  if (snapshot.hasData) {
+                    List<DataRow> cells = [];
+                    int length = snapshot.data?.length ?? 0;
+                    for (int i = 0; i < length; i++) {
+                      cells.add(
+                        DataRow(
+                          cells: [
+                            DataCell(Text('$i')),
+                            DataCell(Text('${snapshot.data?[i].title}')),
+                            DataCell(Text('${snapshot.data?[i].time}')),
+                            DataCell(Text('${snapshot.data?[i].doctorName}')),
+                            const DataCell(Text('Topic')),
+                            DataCell(IconButton(
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('articles')
+                                    .doc(snapshot.data?[i].key)
+                                    .delete();
+                              },
+                              icon:
+                                  const Icon(CupertinoIcons.xmark_circle_fill),
+                              iconSize: 18,
+                            )),
+                          ],
                         ),
-                      )
-                    ],
-                  );
-                }
-                return Container();
-              },
-              // child:
+                      );
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  'Article',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                                Text(
+                                  'Manage All Article post',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800),
+                                )
+                              ]),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: dropdownValue,
+                                icon: const Icon(Icons.arrow_drop_down_sharp),
+                                elevation: 10,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    dropdownValue = value!;
+                                  });
+                                },
+                                items: list.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 1.6,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(columns: const <DataColumn>[
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Number',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Article Title',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Created At',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Created by',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    'Topic',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    '',
+                                  ),
+                                ),
+                              ),
+                            ], rows: cells),
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                  return Container();
+                },
+                // child:
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
