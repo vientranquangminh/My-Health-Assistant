@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +10,8 @@ import 'package:logger/logger.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/doctor/authentication/sign_in.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/patient/fill_information_firestore/fill_information_firestore.dart';
 import 'package:my_health_assistant/src/pages/doctor/doctor_page_controller.dart';
+import 'package:my_health_assistant/src/pages/patient/screens/fill_profile/component/show_dialog.dart';
+import 'package:my_health_assistant/src/pages/patient/screens/sign_in/waiting_sign_in.dart';
 import 'package:my_health_assistant/src/routes.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';
@@ -142,6 +146,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     fillColor: const Color(0XFF0069FE),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const DialogWaitingBuilder(),
+                        );
+
                         User? user = await SignIn.loginUsingEmailPassword(
                             email: _emailController.text,
                             password: _passwordController.text,
@@ -171,15 +180,21 @@ class _SignInScreenState extends State<SignInScreen> {
                                 await SignInDoctor.checkDoctorExist(user.uid);
 
                             if (filled) {
+                              Timer(const Duration(seconds: 2), () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DoctorPageController(),
+                                    ));
+                              });
+                            } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         const DoctorPageController(),
                                   ));
-                            } else {
-                              Navigator.pushNamed(
-                                  context, DoctorRoutes.fillDoctorProfile);
                             }
                           } else {
                             await FillInformation.getPatient();
@@ -192,11 +207,15 @@ class _SignInScreenState extends State<SignInScreen> {
                             final bool filled =
                                 await FillInformation.checkExist(user.uid);
                             if (filled) {
-                              Navigator.pushNamed(
-                                  context, PatientRoutes.pageController);
+                              Timer(const Duration(seconds: 2), () {
+                                Navigator.pushNamed(
+                                    context, PatientRoutes.pageController);
+                              });
                             } else {
-                              Navigator.pushNamed(
-                                  context, PatientRoutes.fillProfile);
+                              Timer(const Duration(seconds: 2), () {
+                                Navigator.pushNamed(
+                                    context, PatientRoutes.fillProfile);
+                              });
                             }
                           }
                         } else {
