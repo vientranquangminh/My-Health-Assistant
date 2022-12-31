@@ -62,18 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 10),
                         TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email address';
-                            } else if (!EmailValidator.validate(value)) {
-                              return 'Please enter a valid email address';
-                            }
-                            return null;
-                          },
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                              hintText: "Email",
+                              hintText: "User name",
                               prefixIcon: const Icon(
                                 Icons.email,
                               ),
