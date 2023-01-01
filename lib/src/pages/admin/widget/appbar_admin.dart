@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-String avatar =
-    'https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/273013377_2981496035396421_570534556808612650_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=CG0eE7D07gUAX9eZ5g2&_nc_ht=scontent.fdad1-4.fna&oh=00_AfAnt1e0eQiWCIQntzsLmUs8rEd0LVhQnGkF372-9LTLbw&oe=63964A09';
-
 class AppBarAdmin extends StatelessWidget {
   const AppBarAdmin({
     Key? key,
@@ -44,14 +41,12 @@ class AppBarAdmin extends StatelessWidget {
             ),
             onPressed: () {}),
         const SizedBox(width: 15),
-        Row(children: [
+        Row(children: const [
           CircleAvatar(
             radius: 17,
-            backgroundImage: NetworkImage(
-              avatar,
-            ),
+            backgroundImage: AssetImage("assets/images/profile/avatar.jpg"),
           ),
-          const Icon(Icons.arrow_drop_down_outlined, color: Colors.black)
+          Icon(Icons.arrow_drop_down_outlined, color: Colors.black)
         ]),
       ],
     );
