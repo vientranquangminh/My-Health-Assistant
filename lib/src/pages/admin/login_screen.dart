@@ -1,6 +1,9 @@
-import 'package:email_validator/email_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dbcrypt/dbcrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
 import 'package:my_health_assistant/src/pages/admin/admin_screen.dart';
+import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -121,29 +124,65 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 30,
                         ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: RawMaterialButton(
-                            elevation: 0.0,
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                            fillColor: const Color(0XFF0069FE),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const AdminScreen(),
-                                    ));
-                              }
-                            },
-                            child: const Text(
-                              "Login",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: DashBoardFunctions.getAdminAccount(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text(
+                                  'Something went wrong ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (snapshot.hasData) {
+                              String hasedUserName =
+                                  snapshot.data?.get('userName');
+                              String hashedPassword =
+                                  snapshot.data?.get('password');
+                              return SizedBox(
+                                width: double.infinity,
+                                child: RawMaterialButton(
+                                  elevation: 0.0,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                  fillColor: const Color(0XFF0069FE),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      DBCrypt dbCrypt = DBCrypt();
+                                      if (dbCrypt.checkpw(_emailController.text,
+                                              hasedUserName) &&
+                                          dbCrypt.checkpw(
+                                              _passwordController.text,
+                                              hashedPassword)) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AdminScreen(),
+                                            ));
+                                      } else {
+                                        AppToasts.showErrorToast(
+                                            context: context,
+                                            title:
+                                                'User name or Password is not correct!');
+                                      }
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container();
+                          },
                         ),
                       ],
                     ),

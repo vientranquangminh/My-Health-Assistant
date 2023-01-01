@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/chat/chat_functions.dart';
 import 'package:my_health_assistant/src/models/chat_model/chat.dart';
-import 'package:my_health_assistant/src/models/chat_model/user_model.dart';
-import 'package:my_health_assistant/src/models/users/doctor.dart';
 import 'package:my_health_assistant/src/pages/patient/screens/history/widgets/conversation.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
 import 'package:my_health_assistant/src/widgets/custom_appbar/custom_appbar.dart';

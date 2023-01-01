@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/pages/admin/login_screen.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';

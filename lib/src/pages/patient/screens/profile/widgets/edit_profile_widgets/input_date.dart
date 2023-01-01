@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class InputDate extends StatefulWidget {
   const InputDate({Key? key, required this.dateInput, required this.date})

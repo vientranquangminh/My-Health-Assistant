@@ -7,3 +7,7 @@ class DepartmentValues{
   static const String pediatric= 'Pediatric';
   static const String radiology= 'Radiology';
 }
+
+class AdminValues {
+  static const String adminId = '9B77HujCqzc0eZ6Mbwai';
+}

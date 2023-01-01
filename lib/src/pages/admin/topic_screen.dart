@@ -5,6 +5,7 @@ import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_
 import 'package:my_health_assistant/src/models/article/article.dart';
 
 import 'package:my_health_assistant/src/pages/admin/widget/appbar_admin.dart';
+import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 
 const List<String> list = <String>[
   'All',
@@ -35,7 +36,8 @@ class _TopicScreenState extends State<TopicScreen> {
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: StreamBuilder<List<Article>>(
-                stream: DashBoardFunctions.getAllArticlesByCondition(dropdownValue),
+                stream:
+                    DashBoardFunctions.getAllArticlesByCondition(dropdownValue),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong: ${snapshot.error}');
@@ -63,6 +65,9 @@ class _TopicScreenState extends State<TopicScreen> {
                                     .collection('articles')
                                     .doc(snapshot.data?[i].key)
                                     .delete();
+                                AppToasts.showToast(
+                                    context: context,
+                                    title: 'Delete successfully');
                               },
                               icon:
                                   const Icon(CupertinoIcons.xmark_circle_fill),
@@ -194,10 +199,11 @@ class _TopicScreenState extends State<TopicScreen> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () {
-                              DashBoardFunctions.deleteAllArticlesByStatus(dropdownValue);
-                              setState(() {
-                                
-                              });
+                              DashBoardFunctions.deleteAllArticlesByStatus(
+                                  dropdownValue);
+                              AppToasts.showToast(
+                                    context: context,
+                                    title: 'Delete successfully');
                             },
                             child: Container(
                                 width: 130,

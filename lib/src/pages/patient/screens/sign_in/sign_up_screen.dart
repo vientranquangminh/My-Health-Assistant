@@ -169,13 +169,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fillColor: const Color(0XFF0069FE),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        bool isOk = false;
                         try {
                           await SignUp.createNewAccount(
                               email: _emailController.text,
                               password: _passwordController.text,
                               context: context);
-                          isOk = true;
                           // ignore: use_build_context_synchronously
                           // Navigator.pushReplacementNamed(
                           //     context, PatientRoutes.waitScreen);

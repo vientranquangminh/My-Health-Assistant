@@ -10,10 +10,10 @@ class AppToasts {
     FToast().init(context);
     FToast().showToast(
       positionedToastBuilder: (context, child) {
-        return Positioned(top: 44.0, left: 24.0, right: 24.0, child: child);
+        return Positioned(bottom: 20.0, left: 24.0, right: 24.0, child: child);
       },
       child: Container(
-        width: double.infinity,
+        width: 500,
         decoration: BoxDecoration(
             color: const Color.fromARGB(255, 161, 230, 163),
             borderRadius: BorderRadius.circular(10),
@@ -35,7 +35,6 @@ class AppToasts {
                       color: const Color.fromARGB(255, 4, 101, 8)),
                 ),
               ),
-              // Image.asset(AppAssets.icCross),
             ],
           ),
         ),

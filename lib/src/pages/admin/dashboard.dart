@@ -1,8 +1,6 @@
-import 'dart:developer';
-
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
 import 'package:my_health_assistant/src/models/article/article.dart';
 import 'package:my_health_assistant/src/models/users/doctor.dart';

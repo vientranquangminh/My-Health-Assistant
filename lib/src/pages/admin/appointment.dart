@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
 import 'package:my_health_assistant/src/models/appointment/appointment.dart';
 import 'package:my_health_assistant/src/styles/font_styles.dart';
+import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
 
 import 'widget/appbar_admin.dart';
 
@@ -33,18 +34,22 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: StreamBuilder<List<Appointment>>(
-                stream: DashBoardFunctions.getAllAppointmentByCondition(dropdownValue),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Something went wrong ${snapshot.error}');
+                stream: DashBoardFunctions.getAllAppointmentByCondition(
+                    dropdownValue),
+                builder: (context, snapshotAppointment) {
+                  if (snapshotAppointment.hasError) {
+                    return Text(
+                        'Something went wrong ${snapshotAppointment.error}');
                   }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshotAppointment.connectionState ==
+                      ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  if (snapshot.hasData) {
-                    List<Appointment> appointments = snapshot.data ?? [];
+                  if (snapshotAppointment.hasData) {
+                    List<Appointment> appointments =
+                        snapshotAppointment.data ?? [];
                     appointments.sort((a, b) {
                       DateTime aDate = DateFormat('dd-MM-yyyy HH:mm')
                           .parse('${a.date} ${a.time}');
@@ -54,14 +59,48 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                       return aDate.compareTo(bDate);
                     });
                     List<DataRow> cells = [];
-                    int length = snapshot.data?.length ?? 0;
+                    int length = snapshotAppointment.data?.length ?? 0;
                     for (int i = 0; i < length; i++) {
                       cells.add(DataRow(cells: [
                         DataCell(Text('${appointments[i].date}')),
                         DataCell(Text('${appointments[i].time}')),
-                        DataCell(Text('${appointments[i].doctorName}')),
+                        DataCell(StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("doctors")
+                              .doc(appointments[i].doctorId)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text(
+                                  'something went wrong: ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {}
+                            if (snapshot.hasData) {
+                              return Text('${snapshot.data?.get('fullName')}');
+                            }
+                            return Container();
+                          },
+                        )),
                         const DataCell(Text('department')),
-                        DataCell(Text('${appointments[i].patientName}')),
+                        DataCell(StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("patients")
+                              .doc(appointments[i].patientId)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text(
+                                  'something went wrong: ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {}
+                            if (snapshot.hasData) {
+                              return Text('${snapshot.data?.get('fullName')}');
+                            }
+                            return Container();
+                          },
+                        )),
                         DataCell(Text('${appointments[i].status}',
                             style: TextStyle(
                                 color: appointments[i].status == 'Cancelled'
@@ -73,8 +112,10 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                           onPressed: () {
                             FirebaseFirestore.instance
                                 .collection('appointments')
-                                .doc(snapshot.data?[i].id)
+                                .doc(snapshotAppointment.data?[i].id)
                                 .delete();
+                            AppToasts.showToast(
+                                context: context, title: 'Delete successfully');
                           },
                           icon: const Icon(CupertinoIcons.xmark_circle_fill),
                           iconSize: 18,
@@ -119,7 +160,9 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                                   setState(() {
                                     dropdownValue = value!;
                                     log('Change status');
-                                    appointments = DashBoardFunctions.getAppointmentByCon(appointments, value);
+                                    appointments =
+                                        DashBoardFunctions.getAppointmentByCon(
+                                            appointments, value);
                                     log('${appointments.length}');
                                   });
                                 },
@@ -188,7 +231,11 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () {
-                              DashBoardFunctions.deleteAllAppointmentByStatus(dropdownValue);
+                              DashBoardFunctions.deleteAllAppointmentByStatus(
+                                  dropdownValue);
+                              AppToasts.showToast(
+                                    context: context,
+                                    title: 'Delete successfully');
                             },
                             child: Container(
                                 width: 130,
@@ -229,37 +276,3 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
     );
   }
 }
-
-class AppointmentObject {
-  String date;
-  String time;
-  String doctor;
-  String department;
-  String patient;
-  String status;
-
-  AppointmentObject(
-      {required this.date,
-      required this.time,
-      required this.doctor,
-      required this.department,
-      required this.patient,
-      required this.status});
-}
-
-List<AppointmentObject> listAppointmentAdmin = [
-  AppointmentObject(
-      time: '9:30',
-      date: '20/12/2022',
-      doctor: 'Linh xe ôm',
-      department: 'Dentist',
-      patient: 'Thành',
-      status: 'Upcoming'),
-  AppointmentObject(
-      time: '14:30',
-      date: '20/12/2022',
-      doctor: 'Lil Rùa',
-      department: 'Dentist',
-      patient: 'Long',
-      status: 'Completed'),
-];

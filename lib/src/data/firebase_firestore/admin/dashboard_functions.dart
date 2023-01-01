@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_health_assistant/src/const_variables.dart';
 import 'package:my_health_assistant/src/models/appointment/appointment.dart';
 import 'package:my_health_assistant/src/models/article/article.dart';
 import 'package:my_health_assistant/src/models/users/doctor.dart';
@@ -114,4 +115,12 @@ class DashBoardFunctions {
       }
     }
   }
+
+  static Stream<DocumentSnapshot> getAdminAccount() {
+    return FirebaseFirestore.instance
+        .collection("admin")
+        .doc(AdminValues.adminId)
+        .snapshots();
+  }
+
 }
