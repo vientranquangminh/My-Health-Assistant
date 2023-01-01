@@ -72,6 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                               )),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your user name';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 20,
