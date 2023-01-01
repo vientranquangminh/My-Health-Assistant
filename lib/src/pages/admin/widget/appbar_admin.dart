@@ -10,29 +10,6 @@ class AppBarAdmin extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const SizedBox(
-          height: 50,
-          width: 200,
-          child: TextField(
-              autofocus: true,
-              maxLines: 1,
-              style: TextStyle(
-                fontSize: 16,
-              ),
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 10),
-                filled: true,
-                prefixIcon: Icon(
-                  Icons.search,
-                ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                fillColor: Colors.white,
-                hintText: 'Search',
-                hintStyle: TextStyle(fontSize: 16.0),
-              )),
-        ),
         const SizedBox(width: 10),
         IconButton(
             icon: const Icon(

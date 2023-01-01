@@ -33,7 +33,8 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: StreamBuilder<List<Appointment>>(
-                stream: DashBoardFunctions.getAllAppointmentByCondition(dropdownValue),
+                stream: DashBoardFunctions.getAllAppointmentByCondition(
+                    dropdownValue),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong ${snapshot.error}');
@@ -60,7 +61,6 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                         DataCell(Text('${appointments[i].date}')),
                         DataCell(Text('${appointments[i].time}')),
                         DataCell(Text('${appointments[i].doctorName}')),
-                        const DataCell(Text('department')),
                         DataCell(Text('${appointments[i].patientName}')),
                         DataCell(Text('${appointments[i].status}',
                             style: TextStyle(
@@ -119,7 +119,9 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                                   setState(() {
                                     dropdownValue = value!;
                                     log('Change status');
-                                    appointments = DashBoardFunctions.getAppointmentByCon(appointments, value);
+                                    appointments =
+                                        DashBoardFunctions.getAppointmentByCon(
+                                            appointments, value);
                                     log('${appointments.length}');
                                   });
                                 },
@@ -161,11 +163,6 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                                           fontWeight: FontWeight.bold)),
                                 ),
                                 DataColumn(
-                                  label: Text('Department',
-                                      style: MyFontStyles.blackColorH1.copyWith(
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                                DataColumn(
                                   label: Text('Patient',
                                       style: MyFontStyles.blackColorH1.copyWith(
                                           fontWeight: FontWeight.bold)),
@@ -188,7 +185,8 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () {
-                              DashBoardFunctions.deleteAllAppointmentByStatus(dropdownValue);
+                              DashBoardFunctions.deleteAllAppointmentByStatus(
+                                  dropdownValue);
                             },
                             child: Container(
                                 width: 130,
