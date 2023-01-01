@@ -161,7 +161,9 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                                     dropdownValue = value!;
                                     log('Change status');
                                     appointments =
+                                       
                                         DashBoardFunctions.getAppointmentByCon(
+                                            
                                             appointments, value);
                                     log('${appointments.length}');
                                   });
@@ -200,11 +202,6 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                                 ),
                                 DataColumn(
                                   label: Text('Doctor',
-                                      style: MyFontStyles.blackColorH1.copyWith(
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                                DataColumn(
-                                  label: Text('Department',
                                       style: MyFontStyles.blackColorH1.copyWith(
                                           fontWeight: FontWeight.bold)),
                                 ),
