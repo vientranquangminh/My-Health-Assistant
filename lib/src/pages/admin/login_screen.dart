@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Email',
+                        const Text('User name',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                         const SizedBox(height: 10),
