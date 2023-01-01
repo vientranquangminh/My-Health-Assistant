@@ -10,7 +10,7 @@ import 'package:my_health_assistant/src/styles/font_styles.dart';
 
 import 'widget/appbar_admin.dart';
 
-const List<String> list = <String>['All', 'Upcoming', 'Completed', 'Cancel'];
+const List<String> list = <String>['All', 'Upcoming', 'Completed', 'Cancelled'];
 
 class AppointmentAdminScreen extends StatefulWidget {
   const AppointmentAdminScreen({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                         DataCell(Text('${appointments[i].patientName}')),
                         DataCell(Text('${appointments[i].status}',
                             style: TextStyle(
-                                color: appointments[i].status == 'Cancel'
+                                color: appointments[i].status == 'Cancelled'
                                     ? Colors.red
                                     : appointments[i].status == 'Upcoming'
                                         ? Colors.blue
@@ -106,8 +106,7 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10)),

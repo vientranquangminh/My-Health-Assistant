@@ -99,7 +99,7 @@ class _TopicScreenState extends State<TopicScreen> {
                           alignment: Alignment.centerRight,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                                horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10)),
