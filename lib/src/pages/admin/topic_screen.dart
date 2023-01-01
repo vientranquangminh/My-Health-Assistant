@@ -98,8 +98,7 @@ class _TopicScreenState extends State<TopicScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10)),
@@ -189,6 +188,37 @@ class _TopicScreenState extends State<TopicScreen> {
                                 ),
                               ),
                             ], rows: cells),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                                width: 130,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 7),
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Delete All',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                )),
                           ),
                         )
                       ],

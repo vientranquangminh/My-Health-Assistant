@@ -179,6 +179,37 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                               rows: cells,
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 10),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                                width: 130,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 7),
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Delete All',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                )),
+                          ),
                         )
                       ],
                     );
