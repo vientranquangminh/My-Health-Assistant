@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/data/firebase_firestore/admin/dashboard_functions.dart';
@@ -36,7 +35,7 @@ class _TopicScreenState extends State<TopicScreen> {
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: StreamBuilder<List<Article>>(
-                stream: DashBoardFunctions.getAllArticles(),
+                stream: DashBoardFunctions.getAllArticlesByCondition(dropdownValue),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong: ${snapshot.error}');
@@ -57,7 +56,7 @@ class _TopicScreenState extends State<TopicScreen> {
                             DataCell(Text('${snapshot.data?[i].title}')),
                             DataCell(Text('${snapshot.data?[i].time}')),
                             DataCell(Text('${snapshot.data?[i].doctorName}')),
-                            const DataCell(Text('Topic')),
+                            DataCell(Text('${snapshot.data?[i].category}')),
                             DataCell(IconButton(
                               onPressed: () {
                                 FirebaseFirestore.instance
@@ -194,7 +193,12 @@ class _TopicScreenState extends State<TopicScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              DashBoardFunctions.deleteAllArticlesByStatus(dropdownValue);
+                              setState(() {
+                                
+                              });
+                            },
                             child: Container(
                                 width: 130,
                                 padding:

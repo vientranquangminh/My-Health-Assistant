@@ -33,7 +33,7 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: StreamBuilder<List<Appointment>>(
-                stream: DashBoardFunctions.getAllAppointment(),
+                stream: DashBoardFunctions.getAllAppointmentByCondition(dropdownValue),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong ${snapshot.error}');
@@ -118,6 +118,9 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                                 onChanged: (String? value) {
                                   setState(() {
                                     dropdownValue = value!;
+                                    log('Change status');
+                                    appointments = DashBoardFunctions.getAppointmentByCon(appointments, value);
+                                    log('${appointments.length}');
                                   });
                                 },
                                 items: list.map<DropdownMenuItem<String>>(
@@ -184,7 +187,9 @@ class _AppointmentAdminScreenState extends State<AppointmentAdminScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              DashBoardFunctions.deleteAllAppointmentByStatus(dropdownValue);
+                            },
                             child: Container(
                                 width: 130,
                                 padding:
