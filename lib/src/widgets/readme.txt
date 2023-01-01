@@ -1,1 +1,0 @@
-this folder contains some widget that can be used multiple times in some class

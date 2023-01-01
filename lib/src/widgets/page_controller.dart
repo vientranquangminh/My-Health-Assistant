@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_health_assistant/src/styles/colors.dart';
-import '../pages/patient/screens/articles/articles_page.dart';
-import '../pages/patient/screens/history/history_page.dart';
-import '../pages/patient/screens/profile/profile_page.dart';
-import '../pages/patient/screens/schedule/appointment_page.dart';
-import '../pages/patient/screens/home/home_page.dart';
+import '../views/patient/screens/articles/articles_page.dart';
+import '../views/patient/screens/history/history_page.dart';
+import '../views/patient/screens/profile/profile_page.dart';
+import '../views/patient/screens/schedule/appointment_page.dart';
+import '../views/patient/screens/home/home_page.dart';
 
 class MyPageController extends StatefulWidget {
   const MyPageController({Key? key}) : super(key: key);
