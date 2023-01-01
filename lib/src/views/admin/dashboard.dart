@@ -100,9 +100,9 @@ class DashBoardScreen extends StatelessWidget {
                                       fontSize: 20),
                                 ),
                                 const SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                Wrap(
+                                  spacing: 18.0,
+                                  runSpacing: 10.0,
                                   children: [
                                     const ContainerDashBoard(
                                       title: 'Admin account',

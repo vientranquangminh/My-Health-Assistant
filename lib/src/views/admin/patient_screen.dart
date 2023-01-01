@@ -95,7 +95,7 @@ class PatientPage extends StatelessWidget {
                           scrollDirection: Axis.vertical,
                           child: DataTable(columns: <DataColumn>[
                             DataColumn(
-                              label: Text('Doctor Name',
+                              label: Text('Patient Name',
                                   style: MyFontStyles.blackColorH1
                                       .copyWith(fontWeight: FontWeight.bold)),
                             ),

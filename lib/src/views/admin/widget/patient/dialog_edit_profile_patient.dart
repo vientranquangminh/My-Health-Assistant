@@ -135,7 +135,10 @@ class _EditPatientState extends State<EditPatient> {
                           )),
                     ),
                     const SizedBox(height: 10),
-                    EditDateOfBirthAdmin(dateInput: _dateInputController, date: snapshot.data!.get('dateOfBirth'),),
+                    EditDateOfBirthAdmin(
+                      dateInput: _dateInputController,
+                      date: snapshot.data!.get('dateOfBirth'),
+                    ),
                     const SizedBox(height: 10),
                     EditGender(
                       getText: (value) => _getTextGender(value),

@@ -69,7 +69,9 @@ class DoctorPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   StreamBuilder<List<Doctor>>(
                     stream: DoctorController.getAllDoctor(),
                     builder: (context, snapshot) {
@@ -90,7 +92,8 @@ class DoctorPage extends StatelessWidget {
                               cells: [
                                 DataCell(Text(doctors[i].fullName)),
                                 DataCell(Text(doctors[i].department)),
-                                DataCell(Text(doctors[i].dateOfBirth.toString())),
+                                DataCell(
+                                    Text(doctors[i].dateOfBirth.toString())),
                                 DataCell(Text(doctors[i].phoneNumber)),
                                 DataCell(Text(doctors[i].gender)),
                                 DataCell(IconButton(
@@ -101,7 +104,8 @@ class DoctorPage extends StatelessWidget {
                                   onPressed: () {
                                     showDialog<String>(
                                       context: context,
-                                      builder: (BuildContext context) => Padding(
+                                      builder: (BuildContext context) =>
+                                          Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         child: EditDoctor(
@@ -110,13 +114,6 @@ class DoctorPage extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                )),
-                                DataCell(IconButton(
-                                  icon: const Icon(
-                                    CupertinoIcons.xmark_circle_fill,
-                                    size: 18,
-                                  ),
-                                  onPressed: () {},
                                 )),
                               ],
                             ),
@@ -155,9 +152,6 @@ class DoctorPage extends StatelessWidget {
                                 label: Text('Gender',
                                     style: MyFontStyles.blackColorH1
                                         .copyWith(fontWeight: FontWeight.bold)),
-                              ),
-                              const DataColumn(
-                                label: Text(''),
                               ),
                               const DataColumn(
                                 label: Text(''),
