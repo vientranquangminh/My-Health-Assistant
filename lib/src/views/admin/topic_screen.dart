@@ -57,7 +57,24 @@ class _TopicScreenState extends State<TopicScreen> {
                             DataCell(Text('$i')),
                             DataCell(Text('${snapshot.data?[i].title}')),
                             DataCell(Text('${snapshot.data?[i].time}')),
-                            DataCell(Text('${snapshot.data?[i].doctorName}')),
+                            DataCell(StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("doctors")
+                              .doc(snapshot.data?[i].doctorID)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text(
+                                  'something went wrong: ${snapshot.error}');
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {}
+                            if (snapshot.hasData) {
+                              return Text('${snapshot.data?.get('fullName')}');
+                            }
+                            return Container();
+                          },
+                        )),
                             DataCell(Text('${snapshot.data?[i].category}')),
                             DataCell(IconButton(
                               onPressed: () {
