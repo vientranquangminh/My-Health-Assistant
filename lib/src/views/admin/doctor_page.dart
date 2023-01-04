@@ -1,4 +1,8 @@
-import 'package:flutter/cupertino.dart';
+
+
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_assistant/src/controllers/doctor/doctor_controller.dart';
 import 'package:my_health_assistant/src/models/users/doctor.dart';
@@ -62,7 +66,24 @@ class DoctorPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 20),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          FirebaseFirestore.instance
+                              .collection("doctors")
+                              .doc(idController.text)
+                              .set({
+                            'fullName': "",
+                            'department': "",
+                            'dateOfBirth': "1999-09-09T00:00:00.000",
+                            'address': "",
+                            'avatar': "",
+                            'description': "",
+                            'gender': "Male",
+                            'hospital': "Vinmec",
+                            'phoneNumber': "0987654321",
+                            'id': idController.text,
+                          });
+                          log('doctor account added');
+                        },
                         child: Container(
                           width: 200,
                           decoration: BoxDecoration(
