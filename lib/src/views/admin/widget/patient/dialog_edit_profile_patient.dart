@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_health_assistant/src/views/admin/widget/edit_day_of_birth_admin.dart';
 import 'package:my_health_assistant/src/views/admin/widget/edit_gender.dart';
 import 'package:my_health_assistant/src/widgets/app_toast/app_toast.dart';
@@ -66,7 +67,7 @@ class _EditPatientState extends State<EditPatient> {
               return const Text('Loading...');
             }
             if (snapshot.hasData) {
-              textGender = snapshot.data!.get('gender');
+              textGender = snapshot.data?.get('gender');
               return SizedBox(
                 height: 400,
                 child: Column(
@@ -74,7 +75,7 @@ class _EditPatientState extends State<EditPatient> {
                     TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: _nameController
-                        ..text = snapshot.data!.get('fullName'),
+                        ..text = snapshot.data?.get('fullName'),
                       decoration: InputDecoration(
                           hintText: "Name",
                           prefixIcon: const Icon(Icons.person),
@@ -92,7 +93,7 @@ class _EditPatientState extends State<EditPatient> {
                     TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: _nickNameController
-                        ..text = snapshot.data!.get('nickname'),
+                        ..text = snapshot.data?.get('nickname'),
                       decoration: InputDecoration(
                           hintText: "Nick Name",
                           prefixIcon: const Icon(Icons.person),
@@ -109,7 +110,7 @@ class _EditPatientState extends State<EditPatient> {
                     const SizedBox(height: 10),
                     TextFormField(
                       controller: _phoneNumberController
-                        ..text = snapshot.data!.get('phoneNumber'),
+                        ..text = snapshot.data?.get('phoneNumber'),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -137,12 +138,13 @@ class _EditPatientState extends State<EditPatient> {
                     const SizedBox(height: 10),
                     EditDateOfBirthAdmin(
                       dateInput: _dateInputController,
-                      date: snapshot.data!.get('dateOfBirth'),
+                      date: snapshot.data?.get('dateOfBirth')
+                      // snapshot.data?.get('dateOfBirth'),
                     ),
                     const SizedBox(height: 10),
                     EditGender(
                       getText: (value) => _getTextGender(value),
-                      gender: snapshot.data!.get('gender'),
+                      gender: snapshot.data?.get('gender'),
                     ),
                     const SizedBox(height: 10),
                   ],

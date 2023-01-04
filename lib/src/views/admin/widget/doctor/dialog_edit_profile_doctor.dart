@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_health_assistant/src/views/admin/widget/edit_day_of_birth_admin.dart';
 import 'package:my_health_assistant/src/views/admin/widget/edit_department.dart';
 import 'package:my_health_assistant/src/views/admin/widget/edit_gender.dart';
@@ -70,8 +71,8 @@ class _EditDoctorState extends State<EditDoctor> {
               );
             }
             if (snapshot.hasData) {
-              textGender = snapshot.data!.get('gender');
-              textDepartment = snapshot.data!.get('department');
+              textGender = snapshot.data?.get('gender');
+              textDepartment = snapshot.data?.get('department');
               return SizedBox(
                 height: 400,
                 child: Column(
@@ -79,7 +80,7 @@ class _EditDoctorState extends State<EditDoctor> {
                     TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: _nameController
-                        ..text = snapshot.data!.get('fullName'),
+                        ..text = snapshot.data?.get('fullName'),
                       decoration: InputDecoration(
                           hintText: "Name",
                           prefixIcon: const Icon(Icons.person),
@@ -96,7 +97,7 @@ class _EditDoctorState extends State<EditDoctor> {
                     const SizedBox(height: 10),
                     TextFormField(
                       controller: _phoneNumberController
-                        ..text = snapshot.data!.get('phoneNumber'),
+                        ..text = snapshot.data?.get('phoneNumber'),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -124,17 +125,17 @@ class _EditDoctorState extends State<EditDoctor> {
                     const SizedBox(height: 10),
                     EditDateOfBirthAdmin(
                       dateInput: _dateInputController,
-                      date: snapshot.data!.get('dateOfBirth'),
+                      date: snapshot.data?.get('dateOfBirth')
                     ),
                     const SizedBox(height: 10),
                     EditGender(
                       getText: (value) => _getTextGender(value),
-                      gender: snapshot.data!.get('gender'),
+                      gender: snapshot.data?.get('gender'),
                     ),
                     const SizedBox(height: 10),
                     EditDepartment(
                         getText: (value) => _getTextDepartment(value),
-                        deparment: snapshot.data!.get('department'))
+                        deparment: snapshot.data?.get('department'))
                   ],
                 ),
               );

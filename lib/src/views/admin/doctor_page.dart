@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_health_assistant/src/controllers/doctor/doctor_controller.dart';
 import 'package:my_health_assistant/src/models/users/doctor.dart';
 import 'package:my_health_assistant/src/views/admin/widget/appbar_admin.dart';
@@ -135,7 +136,7 @@ class DoctorPage extends StatelessWidget {
                                 DataCell(Text(doctors[i].fullName)),
                                 DataCell(Text(doctors[i].department)),
                                 DataCell(
-                                    Text(doctors[i].dateOfBirth.toString())),
+                                    Text(DateFormat('dd-MM-yyyy').format(doctors[i].dateOfBirth))),
                                 DataCell(Text(doctors[i].phoneNumber)),
                                 DataCell(Text(doctors[i].gender)),
                                 DataCell(IconButton(

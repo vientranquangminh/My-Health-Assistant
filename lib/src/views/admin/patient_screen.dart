@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_health_assistant/src/controllers/patient/patient_controller.dart';
 import 'package:my_health_assistant/src/models/users/patient.dart';
 import 'package:my_health_assistant/src/views/admin/widget/appbar_admin.dart';
@@ -60,7 +61,7 @@ class PatientPage extends StatelessWidget {
                               DataCell(Text(patients[i].fullName)),
                               DataCell(Text(patients[i].nickname)),
                               DataCell(
-                                  Text(patients[i].dateOfBirth.toString())),
+                                  Text(DateFormat('dd-MM-yyyy').format(patients[i].dateOfBirth))),
                               DataCell(Text(patients[i].phoneNumber)),
                               DataCell(Text(patients[i].gender)),
                               DataCell(IconButton(
