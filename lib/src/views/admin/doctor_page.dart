@@ -12,6 +12,8 @@ class DoctorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController idController = TextEditingController();
+
     return SingleChildScrollView(
       child: Container(
         color: Colors.grey[200],
@@ -42,32 +44,51 @@ class DoctorPage extends StatelessWidget {
                         ]),
                   ),
                   const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: MyColors.lightBlue,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 8),
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.person_add,
-                              color: MyColors.mainColor,
-                            ),
-                            SizedBox(width: 6),
-                            Text(
-                              'Add New Account Doctor',
-                              style: MyFontStyles.mainColorH4,
-                            )
-                          ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: 200,
+                        height: 50,
+                        child: TextFormField(
+                          controller: idController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              hintText: "Doctor ID",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              )),
                         ),
                       ),
-                    ),
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: MyColors.lightBlue,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 8),
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.person_add,
+                                  color: MyColors.mainColor,
+                                ),
+                                SizedBox(width: 6),
+                                Text(
+                                  'Add New Account Doctor',
+                                  style: MyFontStyles.mainColorH4,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 10,
